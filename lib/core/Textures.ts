@@ -1,0 +1,11 @@
+export interface Textures {
+  resource_pack_name: "vanilla";
+  texture_data: TextureData;
+  texture_name: "atlas.items" | "atlas.terrain";
+}
+
+export interface TextureData {
+  [key: string]: {
+    textures: string;
+  };
+}
