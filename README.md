@@ -16,13 +16,13 @@ I'm still not sure how things are implemented and named, so a lot of stuff are l
 
 ### In Regolith
 
-Install the filter
+Install the filter:
 
 ```
 regolith install github.com/ink0rr/regolith-filters/lazuli
 ```
 
-The filter will look for `.ts` files in the `./packs/data/lazuli/export/` folder and get the default export.
+The filter will look for any `.ts` files inside the `./packs/data/lazuli/export/` folder and get the default export.
 
 ```ts
 import { createEntity } from "https://deno.land/x/lazuli/mod.ts";
@@ -47,9 +47,9 @@ const myEntity = createEntity({
 export default myEntity;
 ```
 
-This will create `my_entity.json` file inside your bp and rp folder. It also adds `entity.lazuli:my_entity.name=My Entity` in the `en_US.lang` file.
+This will create `my_entity.json` file inside your BP and RP folder. It also adds `entity.lazuli:my_entity.name=My Entity` in the `en_US.lang` file.
 
-The `createEntity` function provides some default values in your RP file based on the identifier you provided, so you don't have to fill in every properties.
+The `createEntity` function provides some default values in your RP file based on the identifier, so you don't have to fill in every properties.
 
 You can also default export an array.
 
