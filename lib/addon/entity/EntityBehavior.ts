@@ -1,7 +1,7 @@
-import { BehaviorFile } from "../../core/AddonFile.ts";
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
 import { Entity } from "../../schemas/behavior/entity/mod.ts";
+import { BehaviorFile } from "../AddonFile.ts";
 
 interface Props {
   alias?: string;

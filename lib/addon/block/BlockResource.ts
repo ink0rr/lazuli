@@ -1,7 +1,7 @@
-import { ResourceFile } from "../../core/AddonFile.ts";
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
 import { Block } from "../../schemas/resource/block/mod.ts";
+import { ResourceFile } from "../AddonFile.ts";
 
 export class BlockResource extends ResourceFile<Block> {
   dir = ".";

@@ -1,6 +1,9 @@
+import { Project } from "../core/Project.ts";
 import { writeJson } from "../fs/json.ts";
-import { Project } from "./Project.ts";
 
+/**
+ * The base class for all addon files. See {@link BehaviorFile} or {@link ResourceFile} for implementation details.
+ */
 export abstract class AddonFile<T = unknown, U = unknown> {
   protected abstract dir: string;
   constructor(
@@ -13,6 +16,11 @@ export abstract class AddonFile<T = unknown, U = unknown> {
     }
   }
 
+  /**
+   * Writes the file to the project.
+   *
+   * Takes a {@link Project} object as a parameter to get BP/RP paths and do some mutations.
+   */
   abstract write(project: Project): void;
 }
 

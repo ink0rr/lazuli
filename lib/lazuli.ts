@@ -1,4 +1,4 @@
-import { AddonFile } from "./core/AddonFile.ts";
+import { AddonFile } from "./addon/AddonFile.ts";
 import { Project } from "./core/Project.ts";
 
 type List<T> = Array<T | T[]>;

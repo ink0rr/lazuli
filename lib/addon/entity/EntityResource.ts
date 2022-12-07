@@ -1,7 +1,7 @@
-import { ResourceFile } from "../../core/AddonFile.ts";
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
 import { Entity } from "../../schemas/resource/entity/mod.ts";
+import { ResourceFile } from "../AddonFile.ts";
 
 export class EntityResource extends ResourceFile<Entity> {
   dir = "entity";

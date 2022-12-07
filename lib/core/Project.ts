@@ -54,6 +54,9 @@ export class Project {
     }
   }
 
+  /**
+   * Attempts to load blocks.json, item_texture.json, terrain_texture.json, and en_US.lang
+   */
   async load() {
     // Ignore read errors to avoid creating files when not needed
     const ignore = () => {};
@@ -77,7 +80,11 @@ export class Project {
     return this;
   }
 
-  sync() {
+  /**
+   * Write changes on blocks.json, item_texture.json, terrain_texture.json, and en_US.lang
+   * @returns A promise that resolves when all files have been written
+   */
+  sync(): Promise<void[]> {
     return Promise.all([
       this.#blocks &&
       writeJson(this.paths.blocks, this.#blocks),
