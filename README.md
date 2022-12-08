@@ -146,7 +146,7 @@ Contributions are welcome. There are probably a lot of questionable design decis
 
 ## Credits
 
-- [Blockception](https://github.com/Blockception/Minecraft-bedrock-json-schemas) for providing bedrock json schemas.
+- [Blockception] for bedrock json schemas.
 
 ## License
 
@@ -155,3 +155,4 @@ MIT
 <!-- Links -->
 
 [project-config-standard]: https://github.com/Bedrock-OSS/project-config-standard
+[Blockception]: https://github.com/Blockception/Minecraft-bedrock-json-schemas
