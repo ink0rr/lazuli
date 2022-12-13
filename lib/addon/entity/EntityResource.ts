@@ -1,9 +1,9 @@
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
-import { Entity } from "../../schemas/resource/entity/mod.ts";
+import { Schema } from "../../schemas/mod.ts";
 import { ResourceFile } from "../AddonFile.ts";
 
-export class EntityResource extends ResourceFile<Entity> {
+export class EntityResource extends ResourceFile<Schema.EntityResource> {
   dir = "entity";
 
   get #description() {

@@ -1,13 +1,13 @@
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
-import { Block } from "../../schemas/behavior/block/mod.ts";
+import { Schema } from "../../schemas/mod.ts";
 import { BehaviorFile } from "../AddonFile.ts";
 
 interface Props {
   alias?: string;
 }
 
-export class BlockBehavior extends BehaviorFile<Block, Props> {
+export class BlockBehavior extends BehaviorFile<Schema.BlockBehavior, Props> {
   dir = "blocks";
 
   get #description() {

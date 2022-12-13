@@ -1,2 +1,2 @@
-export * from "./Block.ts";
-export * from "./types/Components.ts";
+export * from "./BlockBehavior.ts";
+export * from "./types/BlockComponents.ts";

@@ -1,6 +1,7 @@
 import { StringOrRecord } from "../../common/StringOrRecord.ts";
+import { SpawnEgg } from "./types/SpawnEgg.ts";
 
-export interface Entity {
+export interface EntityResource {
   format_version: "1.10.0";
   "minecraft:client_entity": {
     description: {
@@ -24,11 +25,4 @@ export interface Entity {
       hide_armor?: boolean;
     };
   };
-}
-
-export interface SpawnEgg {
-  base_color?: string;
-  overlay_color?: string;
-  texture?: string;
-  texture_index?: number;
 }

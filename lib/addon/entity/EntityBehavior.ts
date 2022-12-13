@@ -1,6 +1,6 @@
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
-import { Entity } from "../../schemas/behavior/entity/mod.ts";
+import { Schema } from "../../schemas/mod.ts";
 import { BehaviorFile } from "../AddonFile.ts";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   rideHint?: string | boolean;
 }
 
-export class EntityBehavior extends BehaviorFile<Entity, Props> {
+export class EntityBehavior extends BehaviorFile<Schema.EntityBehavior, Props> {
   dir = "entities";
 
   get #description() {

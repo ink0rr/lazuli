@@ -1,12 +1,12 @@
-import { Block } from "../../../schemas/resource/block/mod.ts";
+import { Schema } from "../../../schemas/mod.ts";
 
 export function RPBlockBuilder(name: string) {
-  const data: Block = {
+  const data: Schema.BlockResource = {
     textures: name,
   };
   return {
     ...data,
-    override(data: Block) {
+    override(data: Schema.BlockResource) {
       Object.assign(this, data);
     },
     build() {

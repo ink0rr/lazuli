@@ -1,11 +1,12 @@
 import { StringOrRecord } from "../../common/StringOrRecord.ts";
 import { ComponentGroups } from "./types/ComponentGroups.ts";
-import { Components } from "./types/components/Components.ts";
+import { EntityComponents } from "./types/components/EntityComponents.ts";
 import { Events } from "./types/Events.ts";
+import { Property } from "./types/Property.ts";
 import { RuntimeIdentifier } from "./types/RuntimeIdentifier.ts";
 
-export interface Entity {
-  format_version: "1.16.0";
+export interface EntityBehavior {
+  format_version: "1.19.50";
   "minecraft:entity": {
     description: {
       identifier: string;
@@ -17,9 +18,10 @@ export interface Entity {
         animate?: StringOrRecord[];
       };
       animations?: Record<string, string>;
+      properties?: Record<string, Property>;
     };
     component_groups?: ComponentGroups;
-    components: Components;
+    components: EntityComponents;
     events?: Events;
   };
 }

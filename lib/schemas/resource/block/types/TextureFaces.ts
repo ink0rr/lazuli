@@ -9,8 +9,3 @@ export type TextureFaces =
     west?: string;
   }
   | string;
-
-export interface Block {
-  sound?: string;
-  textures: TextureFaces;
-}

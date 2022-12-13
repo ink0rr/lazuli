@@ -1,4 +1,4 @@
-export interface Components {
+export interface BlockComponents {
   "minecraft:loot"?: string;
   "minecraft:destroy_time"?: number;
   "minecraft:explosion_resistance"?: number;

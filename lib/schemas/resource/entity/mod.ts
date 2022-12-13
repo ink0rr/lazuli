@@ -1,1 +1,2 @@
-export * from "./Entity.ts";
+export * from "./EntityResource.ts";
+export * from "./types/SpawnEgg.ts";

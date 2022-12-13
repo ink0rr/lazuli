@@ -7,7 +7,7 @@ import { DamageSource } from "./DamageSource.ts";
 import { EntityType } from "./EntityType.ts";
 import { SoundEvent } from "./SoundEvent.ts";
 
-export interface Components {
+export interface EntityComponents {
   /**
    * Adds a rider to the entity. Requires `minecraft:rideable.`
    */

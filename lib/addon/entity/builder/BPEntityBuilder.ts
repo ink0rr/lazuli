@@ -1,8 +1,8 @@
-import { Entity } from "../../../schemas/behavior/entity/mod.ts";
+import { Schema } from "../../../schemas/mod.ts";
 
 export function BPEntityBuilder(identifier: string) {
-  const data: Entity = {
-    format_version: "1.16.0",
+  const data: Schema.EntityBehavior = {
+    format_version: "1.19.50",
     "minecraft:entity": {
       description: {
         identifier,
@@ -15,7 +15,7 @@ export function BPEntityBuilder(identifier: string) {
   };
   return {
     ...data["minecraft:entity"],
-    override(data: Entity) {
+    override(data: Schema.EntityBehavior) {
       Object.assign(this, data["minecraft:entity"]);
     },
     build() {

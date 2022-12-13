@@ -1,6 +1,6 @@
-import { Components } from "./types/Components.ts";
+import { BlockComponents } from "./types/BlockComponents.ts";
 
-export interface Block {
+export interface BlockBehavior {
   format_version: "1.12.0";
   "minecraft:block": {
     description: {
@@ -8,6 +8,6 @@ export interface Block {
       is_experimental?: boolean;
       register_to_creative_menu?: boolean;
     };
-    components: Components;
+    components: BlockComponents;
   };
 }

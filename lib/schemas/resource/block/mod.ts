@@ -1,1 +1,2 @@
-export * from "./Block.ts";
+export * from "./BlockResource.ts";
+export * from "./types/TextureFaces.ts";

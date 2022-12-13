@@ -1,7 +1,7 @@
-import { Block } from "../../../schemas/behavior/block/mod.ts";
+import { Schema } from "../../../schemas/mod.ts";
 
 export function BPBlockBuilder(identifier: string) {
-  const data: Block = {
+  const data: Schema.BlockBehavior = {
     format_version: "1.12.0",
     "minecraft:block": {
       description: {
@@ -14,7 +14,7 @@ export function BPBlockBuilder(identifier: string) {
   };
   return {
     ...data["minecraft:block"],
-    override(data: Block) {
+    override(data: Schema.BlockBehavior) {
       Object.assign(this, data["minecraft:block"]);
     },
     build() {
