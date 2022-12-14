@@ -26,28 +26,20 @@ export class Project {
   #findPaths(): [string, string] {
     try {
       const { packs } = readJsonSync<Config>("config.json");
-      if (
-        Deno.readDirSync(packs.behaviorPack) &&
-        Deno.readDirSync(packs.resourcePack)
-      ) {
-        return [packs.behaviorPack, packs.resourcePack];
-      } else {
-        throw new Error("Invalid config.json");
-      }
+
+      // Check if the paths exist
+      Deno.statSync(packs.behaviorPack);
+      Deno.statSync(packs.resourcePack);
+      return [packs.behaviorPack, packs.resourcePack];
     } catch {
-      const paths = [];
-      for (const dir of Deno.readDirSync(".")) {
-        if (dir.isFile) continue;
-        if (dir.name.match(/[br]p$/i)) {
-          paths.push(dir.name);
-        }
-        if (paths.length === 2) {
-          break;
-        }
-      }
-      const [BP, RP] = paths;
+      const dirs = Array.from(Deno.readDirSync(".")).filter((entry, _i) =>
+        entry.isDirectory
+      );
+      const BP = dirs.find((dir) => dir.name.match(/bp$/i))?.name;
+      const RP = dirs.find((dir) => dir.name.match(/rp$/i))?.name;
+
       // Make sure the paths have matching names aside from the bp/rp suffix
-      if (BP.slice(0, -2) === RP.slice(0, -2)) {
+      if (BP && RP && BP.slice(0, -2) === RP.slice(0, -2)) {
         return [BP, RP];
       }
       throw new Error("Cannot find behavior pack and resource pack folders");
