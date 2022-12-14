@@ -15,19 +15,21 @@ export class EntityBehavior extends BehaviorFile<Schema.EntityBehavior, Props> {
     return this.data["minecraft:entity"].description;
   }
 
-  write(project: Project): void {
-    super.write(project);
-
-    const { alias, rideHint } = this.props ?? {};
+  write(project: Project) {
     const { identifier, is_spawnable } = this.#description;
     const id = new Identifier(identifier);
 
-    project.lang.setEntity(id, alias);
-    if (is_spawnable) {
-      project.lang.setSpawnEgg(id, alias);
+    if (id.namespace !== "minecraft") {
+      const { alias, rideHint } = this.props ?? {};
+
+      project.lang.setEntity(id, alias);
+      if (is_spawnable) {
+        project.lang.setSpawnEgg(id, alias);
+      }
+      if (rideHint) {
+        project.lang.setRideHint(id, rideHint);
+      }
     }
-    if (rideHint) {
-      project.lang.setRideHint(id, rideHint);
-    }
+    return super.write(project);
   }
 }

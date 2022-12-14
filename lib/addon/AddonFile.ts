@@ -21,14 +21,14 @@ export abstract class AddonFile<T = unknown, U = unknown> {
    *
    * Takes a {@link Project} object as a parameter to get BP/RP paths and do some mutations.
    */
-  abstract write(project: Project): void;
+  abstract write(project: Project): Promise<void>;
 }
 
 export abstract class BehaviorFile<T, U = undefined> extends AddonFile<T, U> {
   write(project: Project) {
     const { BP } = project.paths;
     const { dir, filePath, data } = this;
-    writeJson(`${BP}/${dir}/${filePath}.json`, data);
+    return writeJson(`${BP}/${dir}/${filePath}.json`, data);
   }
 }
 
@@ -36,6 +36,6 @@ export abstract class ResourceFile<T, U = undefined> extends AddonFile<T, U> {
   write(project: Project) {
     const { RP } = project.paths;
     const { dir, filePath, data } = this;
-    writeJson(`${RP}/${dir}/${filePath}.json`, data);
+    return writeJson(`${RP}/${dir}/${filePath}.json`, data);
   }
 }

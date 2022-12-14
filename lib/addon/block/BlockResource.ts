@@ -13,13 +13,16 @@ export class BlockResource extends ResourceFile<Schema.BlockResource> {
   /**
    * Skips the normal write method, blocks.json will be written through the project.sync() method.
    */
-  write(project: Project): void {
+  write(project: Project) {
     const { identifier, data } = this;
-    project.blocks[identifier.toString()] ??= data;
 
-    const name = this.identifier.name;
-    if (data.textures === name) {
-      project.addTerrainTexture(name, name);
+    if (identifier.namespace !== "minecraft") {
+      project.blocks[identifier.toString()] ??= data;
+      const name = identifier.name;
+      if (data.textures === name) {
+        project.addTerrainTexture(name, name);
+      }
     }
+    return Promise.resolve();
   }
 }

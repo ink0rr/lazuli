@@ -14,13 +14,12 @@ export class BlockBehavior extends BehaviorFile<Schema.BlockBehavior, Props> {
     return this.data["minecraft:block"].description;
   }
 
-  write(project: Project): void {
-    super.write(project);
+  write(project: Project) {
+    const id = new Identifier(this.#description.identifier);
 
-    const { alias } = this.props ?? {};
-    const { identifier } = this.#description;
-    const id = new Identifier(identifier);
-
-    project.lang.setBlock(id, alias);
+    if (id.namespace !== "minecraft") {
+      project.lang.setBlock(id, this.props?.alias);
+    }
+    return super.write(project);
   }
 }
