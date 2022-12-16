@@ -1,4 +1,4 @@
-import { dirname } from "../../deps.ts";
+import { dirname } from "path";
 
 export async function outputFile(path: string, text: string) {
   try {

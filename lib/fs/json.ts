@@ -1,4 +1,4 @@
-import { JSONC } from "../../deps.ts";
+import * as JSONC from "jsonc";
 import { outputFile, outputFileSync } from "./file.ts";
 
 function stringify(obj: unknown): string {
