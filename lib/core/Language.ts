@@ -1,4 +1,4 @@
-import { startCase } from "lodash";
+import startCase from "lodash/startCase";
 import { Identifier } from "./Identifier.ts";
 
 export class Language extends Map<string, string> {
