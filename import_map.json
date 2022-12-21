@@ -1,8 +1,8 @@
 {
   "imports": {
-    "jsonc": "https://deno.land/std@0.165.0/encoding/jsonc.ts",
-    "path": "https://deno.land/std@0.165.0/path/mod.ts",
-    "path/posix": "https://deno.land/std@0.165.0/path/posix.ts",
+    "jsonc": "https://deno.land/std@0.170.0/encoding/jsonc.ts",
+    "path": "https://deno.land/std@0.170.0/path/mod.ts",
+    "path/posix": "https://deno.land/std@0.170.0/path/posix.ts",
     "lodash/startCase": "https://deno.land/x/lodash@4.17.15-es/startCase.js"
   }
 }

@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "test": "deno test --allow-all"
+    "test": "deno run --allow-all test/_init.ts && deno test --allow-all"
   },
   "importMap": "import_map.json"
 }
