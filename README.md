@@ -23,10 +23,13 @@ This helps you write scripts that would work on most projects without having to 
 You can pass any class that derives from `AddonFile` to the `lazuli` function, and it'll write the file to their designated path.
 
 ```ts
-import { EntityBehavior, lazuli } from "https://deno.land/x/lazuli/mod.ts";
+import {
+  createEntityBehavior,
+  lazuli,
+} from "https://deno.land/x/lazuli/mod.ts";
 
-const myEntity = new EntityBehavior("my_entity", {
-  format_version: "1.16.0",
+const myEntity = createEntityBehavior("my_entity", {
+  format_version: "1.19.50",
   "minecraft:entity": {
     description: {
       identifier: "lazuli:my_entity",
@@ -49,7 +52,7 @@ lazuli([myEntity]);
 You can also write into a subdirectory. This will write to `BP/entities/custom/my_entity.json`.
 
 ```ts
-const myEntity = new EntityBehavior("custom/my_entity", {
+const myEntity = createEntityBehavior("custom/my_entity", {
   // ...
 });
 ```
@@ -61,7 +64,8 @@ import { createEntity, lazuli } from "https://deno.land/x/lazuli/mod.ts";
 
 const myEntity = createEntity({
   identifier: "lazuli:my_entity",
-  behavior(bp) {
+  behavior(entity) {
+    const bp = entity["minecraft:entity"];
     bp.components = {
       "minecraft:health": {
         value: 20,
@@ -80,21 +84,22 @@ const myEntity = createEntity({
         },
       },
     };
+    return entity;
   },
-  resource(rp) {
+  resource(entity) {
+    const rp = entity["minecraft:client_entity"].description;
     rp.textures = {
       default: "textures/blank",
     };
     rp.geometry = {
-      default: "geometry/blank",
+      default: "geometry.blank",
     };
+    return entity;
   },
 });
 
 lazuli([myEntity]);
 ```
-
-The `createEntity` function returns a tuple of `EntityBehavior` and `EntityResource` instances. You can destructure them or pass them as is to the `lazuli` function.
 
 ## Usage In Regolith
 
@@ -107,9 +112,9 @@ regolith install github.com/ink0rr/regolith-filters/lazuli
 The filter will look for any `.ts` files inside your `data/lazuli/export/` folder and get the default export.
 
 ```ts
-import { createEntity } from "https://deno.land/x/lazuli/mod.ts";
+import { createEntityBehavior } from "https://deno.land/x/lazuli/mod.ts";
 
-const myEntity = new EntityBehavior("my_entity", {
+const myEntity = createEntityBehavior("my_entity", {
   // ...
 });
 
@@ -123,16 +128,12 @@ import { createEntity, createBlock } from "https://deno.land/x/lazuli/mod.ts";
 
 const myEntity = createEntity({
   identifier: "lazuli:my_entity",
-  behavior(bp) {
-    // ...
-  },
-  resource(rp) {
-    // ...
-  },
+  // ...
 });
 
 const myBlock = createBlock({
   identifier: "lazuli:my_block",
+  // ...
 });
 
 export default [myEntity, myBlock];
@@ -155,4 +156,4 @@ MIT
 <!-- Links -->
 
 [project-config-standard]: https://github.com/Bedrock-OSS/project-config-standard
-[Blockception]: https://github.com/Blockception/Minecraft-bedrock-json-schemas
+[blockception]: https://github.com/Blockception/Minecraft-bedrock-json-schemas
