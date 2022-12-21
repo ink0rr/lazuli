@@ -1,6 +1,11 @@
-import { Schema } from "../../schemas/mod.ts";
-import { BehaviorFile } from "../AddonFile.ts";
+import { Recipe } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class Recipe extends BehaviorFile<Schema.Recipe> {
-  dir = "recipes";
+export function createRecipe(filePath: string, data: Recipe) {
+  return new AddonFile({
+    pack: "BP",
+    dir: "recipes",
+    filePath,
+    data,
+  });
 }

@@ -1,13 +1,16 @@
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
-import { Schema } from "../../schemas/mod.ts";
-import { ResourceFile } from "../AddonFile.ts";
+import { BlockResource } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class BlockResource extends ResourceFile<Schema.BlockResource> {
-  dir = ".";
-
-  constructor(public identifier: Identifier, data: Schema.BlockResource) {
-    super("blocks", data);
+class BlockResourceFile extends AddonFile {
+  constructor(private identifier: string, private data: BlockResource) {
+    super({
+      pack: "RP",
+      dir: ".",
+      filePath: "blocks",
+      data,
+    });
   }
 
   /**
@@ -15,14 +18,18 @@ export class BlockResource extends ResourceFile<Schema.BlockResource> {
    */
   write(project: Project) {
     const { identifier, data } = this;
-
-    if (identifier.namespace !== "minecraft") {
-      project.blocks[identifier.toString()] ??= data;
-      const name = identifier.name;
+    const id = new Identifier(identifier);
+    if (id.namespace !== "minecraft") {
+      project.blocks[identifier] ??= data;
+      const name = id.name;
       if (data.textures === name) {
         project.addTerrainTexture(name, name);
       }
     }
     return Promise.resolve();
   }
+}
+
+export function createBlockResource(identifier: string, data: BlockResource) {
+  return new BlockResourceFile(identifier, data);
 }

@@ -1,27 +1,28 @@
 import { Identifier } from "../../core/Identifier.ts";
-import { Project } from "../../core/Project.ts";
-import { Schema } from "../../schemas/mod.ts";
-import { ResourceFile } from "../AddonFile.ts";
+import { EntityResource } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class EntityResource extends ResourceFile<Schema.EntityResource> {
-  dir = "entity";
+export function createEntityResource(
+  filePath: string,
+  data: EntityResource,
+) {
+  return new AddonFile({
+    pack: "RP",
+    dir: "entity",
+    filePath,
+    data,
+    preWrite(project) {
+      const { identifier, spawn_egg } =
+        data["minecraft:client_entity"].description;
+      const id = new Identifier(identifier);
 
-  get #description() {
-    return this.data["minecraft:client_entity"].description;
-  }
+      if (id.namespace !== "minecraft") {
+        const name = id.name;
 
-  write(project: Project) {
-    const { identifier, spawn_egg } = this.#description;
-    const id = new Identifier(identifier);
-
-    if (id.namespace !== "minecraft") {
-      const { filePath } = this;
-      const name = id.name;
-
-      if (spawn_egg?.texture === name) {
-        project.addItemTexture(name, `spawn_egg/${filePath}`);
+        if (spawn_egg?.texture === name) {
+          project.addItemTexture(name, `spawn_egg/${filePath}`);
+        }
       }
-    }
-    return super.write(project);
-  }
+    },
+  });
 }

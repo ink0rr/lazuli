@@ -1,6 +1,11 @@
-import { Schema } from "../../schemas/mod.ts";
-import { BehaviorFile } from "../AddonFile.ts";
+import { Animation } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class Animation extends BehaviorFile<Schema.Animation> {
-  dir = "animations";
+export function createAnimation(filePath: string, data: Animation) {
+  return new AddonFile({
+    pack: "BP",
+    dir: "animations",
+    filePath,
+    data,
+  });
 }

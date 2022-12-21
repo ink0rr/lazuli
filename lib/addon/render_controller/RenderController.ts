@@ -1,6 +1,14 @@
-import { Schema } from "../../schemas/mod.ts";
-import { ResourceFile } from "../AddonFile.ts";
+import { RenderController } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class RenderController extends ResourceFile<Schema.RenderController> {
-  dir = "render_controllers";
+export function createRenderController(
+  filePath: string,
+  data: RenderController,
+) {
+  return new AddonFile({
+    pack: "RP",
+    dir: "render_controllers",
+    filePath,
+    data,
+  });
 }

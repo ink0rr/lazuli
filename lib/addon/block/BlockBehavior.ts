@@ -1,25 +1,28 @@
 import { Identifier } from "../../core/Identifier.ts";
-import { Project } from "../../core/Project.ts";
-import { Schema } from "../../schemas/mod.ts";
-import { BehaviorFile } from "../AddonFile.ts";
+import { BlockBehavior } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
 interface Props {
   alias?: string;
 }
 
-export class BlockBehavior extends BehaviorFile<Schema.BlockBehavior, Props> {
-  dir = "blocks";
+export function createBlockBehavior(
+  filePath: string,
+  data: BlockBehavior,
+  props?: Props,
+) {
+  const description = data["minecraft:block"].description;
+  return new AddonFile({
+    pack: "BP",
+    dir: "blocks",
+    filePath,
+    data,
+    preWrite(project) {
+      const id = new Identifier(description.identifier);
 
-  get #description() {
-    return this.data["minecraft:block"].description;
-  }
-
-  write(project: Project) {
-    const id = new Identifier(this.#description.identifier);
-
-    if (id.namespace !== "minecraft") {
-      project.lang.setBlock(id, this.props?.alias);
-    }
-    return super.write(project);
-  }
+      if (id.namespace !== "minecraft") {
+        project.lang.setBlock(id, props?.alias);
+      }
+    },
+  });
 }

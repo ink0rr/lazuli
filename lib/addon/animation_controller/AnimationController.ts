@@ -1,7 +1,14 @@
-import { Schema } from "../../schemas/mod.ts";
-import { BehaviorFile } from "../AddonFile.ts";
+import { AnimationController } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class AnimationController
-  extends BehaviorFile<Schema.AnimationController> {
-  dir = "animation_controllers";
+export function createAnimationController(
+  filePath: string,
+  data: AnimationController,
+) {
+  return new AddonFile({
+    pack: "BP",
+    dir: "animation_controllers",
+    filePath,
+    data,
+  });
 }

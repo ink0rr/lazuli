@@ -1,3 +1,3 @@
-import { Schema } from "../schemas/mod.ts";
+import { BlockResource } from "../schemas/mod.ts";
 
-export type Blocks = Record<string, Schema.BlockResource>;
+export type Blocks = Record<string, BlockResource>;

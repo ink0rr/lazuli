@@ -1,35 +1,37 @@
 import { Identifier } from "../../core/Identifier.ts";
-import { Project } from "../../core/Project.ts";
-import { Schema } from "../../schemas/mod.ts";
-import { BehaviorFile } from "../AddonFile.ts";
+import { EntityBehavior } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
 interface Props {
   alias?: string;
   rideHint?: string | boolean;
 }
 
-export class EntityBehavior extends BehaviorFile<Schema.EntityBehavior, Props> {
-  dir = "entities";
+export function createEntityBehavior(
+  filePath: string,
+  data: EntityBehavior,
+  props?: Props,
+) {
+  return new AddonFile({
+    pack: "BP",
+    dir: "entities",
+    filePath,
+    data,
+    preWrite(project) {
+      const { identifier, is_spawnable } = data["minecraft:entity"].description;
+      const id = new Identifier(identifier);
 
-  get #description() {
-    return this.data["minecraft:entity"].description;
-  }
+      if (id.namespace !== "minecraft") {
+        const { alias, rideHint } = props ?? {};
 
-  write(project: Project) {
-    const { identifier, is_spawnable } = this.#description;
-    const id = new Identifier(identifier);
-
-    if (id.namespace !== "minecraft") {
-      const { alias, rideHint } = this.props ?? {};
-
-      project.lang.setEntity(id, alias);
-      if (is_spawnable) {
-        project.lang.setSpawnEgg(id, alias);
+        project.lang.setEntity(id, alias);
+        if (is_spawnable) {
+          project.lang.setSpawnEgg(id, alias);
+        }
+        if (rideHint) {
+          project.lang.setRideHint(id, rideHint);
+        }
       }
-      if (rideHint) {
-        project.lang.setRideHint(id, rideHint);
-      }
-    }
-    return super.write(project);
-  }
+    },
+  });
 }

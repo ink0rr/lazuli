@@ -1,31 +1,29 @@
 import { Identifier } from "../../core/Identifier.ts";
 import { Project } from "../../core/Project.ts";
-import { Schema } from "../../schemas/mod.ts";
-import { ResourceFile } from "../AddonFile.ts";
+import { ItemResource } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class ItemResource extends ResourceFile<Schema.ItemResource> {
-  dir = "items";
+export function createItemResource(
+  filePath: string,
+  data: ItemResource,
+) {
+  return new AddonFile({
+    pack: "RP",
+    dir: "items",
+    filePath,
+    data,
+    preWrite(project: Project) {
+      const item = data["minecraft:item"];
+      const { identifier } = item.description;
+      const id = new Identifier(identifier);
 
-  get #description() {
-    return this.data["minecraft:item"].description;
-  }
+      if (id.namespace !== "minecraft") {
+        const name = id.name;
 
-  get #components() {
-    return this.data["minecraft:item"].components;
-  }
-
-  write(project: Project) {
-    const { identifier } = this.#description;
-    const id = new Identifier(identifier);
-
-    if (id.namespace !== "minecraft") {
-      const { filePath } = this;
-      const name = id.name;
-
-      if (this.#components?.["minecraft:icon"] === name) {
-        project.addItemTexture(name, filePath);
+        if (item.components?.["minecraft:icon"] === name) {
+          project.addItemTexture(name, filePath);
+        }
       }
-    }
-    return super.write(project);
-  }
+    },
+  });
 }

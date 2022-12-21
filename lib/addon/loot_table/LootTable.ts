@@ -1,6 +1,11 @@
-import { Schema } from "../../schemas/mod.ts";
-import { BehaviorFile } from "../AddonFile.ts";
+import { LootTable } from "../../schemas/mod.ts";
+import { AddonFile } from "../AddonFile.ts";
 
-export class LootTable extends BehaviorFile<Schema.LootTable> {
-  dir = "loot_tables";
+export function createLootTable(filePath: string, data: LootTable) {
+  return new AddonFile({
+    pack: "BP",
+    dir: "loot_tables",
+    filePath,
+    data,
+  });
 }
