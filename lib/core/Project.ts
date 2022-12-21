@@ -102,7 +102,7 @@ export class Project {
 
   addItemTexture(name: string, texture: string) {
     this.#item_texture ??= {
-      resource_pack_name: "vanilla",
+      resource_pack_name: "pack.name",
       texture_name: "atlas.items",
       texture_data: {},
     };
@@ -113,7 +113,7 @@ export class Project {
 
   addTerrainTexture(name: string, texture: string) {
     this.#terrain_texture ??= {
-      resource_pack_name: "vanilla",
+      resource_pack_name: "pack.name",
       texture_name: "atlas.terrain",
       texture_data: {},
     };

@@ -5,6 +5,8 @@ export interface Animation {
 
 export interface AnimationItem {
   loop?: boolean;
+  loop_delay?: string | number;
+  start_delay?: string | number;
   animation_length?: number;
   timeline: Record<number, string[]>;
 }
