@@ -1,4 +1,4 @@
-import { join } from "path/posix";
+import { join } from "../../deps.ts";
 
 export class Identifier extends String {
   #namespace: string;
