@@ -4,7 +4,7 @@ import { Identifier } from "./Identifier.ts";
 export class Language extends Map<string, string> {
   constructor(text = "") {
     super(
-      text.split("\n").map((s) => s.split("=") as [string, string]),
+      text.split(/\r?\n/).map((s) => s.split("=") as [string, string]),
     );
   }
 
