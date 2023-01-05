@@ -5,28 +5,18 @@ export interface EventAction {
   component_groups: string[];
 }
 
-export interface EventRandomize {
-  add?: EventAction;
-  remove?: EventAction;
-  trigger?: string | EventTriggerFiltered;
+export type EventRandomize = Event & {
   weight?: number;
-}
-
-export interface EventSequence {
-  add?: EventAction;
-  filters?: Filters;
-  remove?: EventAction;
-  trigger?: string | EventTriggerFiltered;
-}
+};
 
 export interface Event {
   add?: EventAction;
   filters?: Filters;
   randomize?: EventRandomize[];
   remove?: EventAction;
-  sequence?: EventSequence[];
-  trigger?: string | EventTriggerFiltered;
+  sequence?: Event[];
   set_property?: Record<string, string | number | boolean>;
+  trigger?: string | EventTriggerFiltered;
 }
 
 export type Events = Record<string, Event> & {
