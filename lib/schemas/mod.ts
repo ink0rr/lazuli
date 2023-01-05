@@ -29,6 +29,7 @@ export * from "./common/Range.ts";
 export * from "./common/RawText.ts";
 export * from "./common/SpellEffects.ts";
 export * from "./common/StringOrRecord.ts";
+export * from "./resource/attachable/Attachable.ts";
 export * from "./resource/block/BlockResource.ts";
 export * from "./resource/block/types/TextureFaces.ts";
 export * from "./resource/entity/EntityResource.ts";

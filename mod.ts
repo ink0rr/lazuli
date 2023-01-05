@@ -1,6 +1,7 @@
 export * from "./lib/addon/AddonFile.ts";
 export * from "./lib/addon/animation/Animation.ts";
 export * from "./lib/addon/animation_controller/AnimationController.ts";
+export * from "./lib/addon/attachable/Attachable.ts";
 export * from "./lib/addon/block/Block.ts";
 export * from "./lib/addon/block/BlockBehavior.ts";
 export * from "./lib/addon/block/BlockResource.ts";
