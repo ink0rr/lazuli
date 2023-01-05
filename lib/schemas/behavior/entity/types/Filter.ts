@@ -1,3 +1,5 @@
+import { LiteralUnion } from "../../../common/LiteralUnion.ts";
+
 export type Filters = Filter | Filter[];
 
 export interface Filter {
@@ -11,20 +13,33 @@ export interface Filter {
   value?: boolean | number | string;
 }
 
-export type FilterDomain =
+export type FilterDomain = LiteralUnion<
   | "any"
   | "armor"
   | "feet"
   | "hand"
   | "head"
   | "leg"
-  | "torso";
+  | "torso"
+>;
 
-export type FilterOperator = "==" | "!=" | ">=" | "<=" | ">" | "<";
+export type FilterOperator =
+  | "!="
+  | "<"
+  | "<="
+  | "<>"
+  | "="
+  | "=="
+  | ">"
+  | ">="
+  | "equals"
+  | "not";
 
 export type FilterSubject =
+  | "baby"
   | "block"
   | "damager"
+  | "holder"
   | "other"
   | "parent"
   | "player"
@@ -32,8 +47,11 @@ export type FilterSubject =
   | "target";
 
 export type FilterTest =
+  | "bool_property"
   | "clock_time"
   | "distance_to_nearest_player"
+  | "enum_property"
+  | "float_property"
   | "has_ability"
   | "has_biome_tag"
   | "has_component"
@@ -42,6 +60,7 @@ export type FilterTest =
   | "has_equipment"
   | "has_mob_effect"
   | "has_nametag"
+  | "has_property"
   | "has_ranged_weapon"
   | "has_silk_touch"
   | "has_tag"
@@ -57,8 +76,10 @@ export type FilterTest =
   | "in_water"
   | "in_water_or_rain"
   | "inactivity_timer"
+  | "int_property"
   | "is_altitude"
   | "is_avoiding_mobs"
+  | "is_baby"
   | "is_biome"
   | "is_block"
   | "is_brightness"

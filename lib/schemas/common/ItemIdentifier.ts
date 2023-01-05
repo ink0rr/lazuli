@@ -1,6 +1,4 @@
-type LiteralUnion<T extends string, U = string> =
-  | T
-  | (U & Record<never, never>);
+import { LiteralUnion } from "./LiteralUnion.ts";
 
 export type ItemIdentifier = LiteralUnion<
   | "minecraft:acacia_boat"
