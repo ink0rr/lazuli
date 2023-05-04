@@ -92,10 +92,9 @@ export class Project {
 
   get blocks() {
     this.#blocks ??= {
-      // @ts-ignore: ¯\_(ツ)_/¯
       format_version: [1, 1, 0],
     };
-    return this.#blocks!;
+    return this.#blocks;
   }
 
   addItemTexture(name: string, texture: string) {
