@@ -5,8 +5,11 @@ export class Language extends Map<string, string> {
   constructor(text = "") {
     super(
       text.split(/\r?\n/).map((s, i) => {
-        const [key, value] = s.split("=");
-        return [`_${i}_${key}`, value];
+        let [key, value] = s.split("=");
+        if (key === "") {
+          key = `_${i}_`;
+        }
+        return [key, value];
       }),
     );
   }
