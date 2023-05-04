@@ -21,5 +21,3 @@ export * from "./lib/fs/json.ts";
 export * from "./lib/lazuli.ts";
 export * from "./lib/schemas/mod.ts";
 export * from "./lib/utils/addAnimation.ts";
-export * from "./lib/utils/deepMerge.ts";
-export * from "./lib/utils/proxy.ts";
