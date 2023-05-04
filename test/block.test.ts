@@ -1,9 +1,4 @@
-import {
-  createBlock,
-  createBlockBehavior,
-  createBlockResource,
-  lazuli,
-} from "../mod.ts";
+import { createBlock, createBlockBehavior, createBlockResource, lazuli } from "../mod.ts";
 
 Deno.test("Block Behavior", async () => {
   const block = createBlockBehavior("test_block", {

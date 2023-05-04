@@ -1,9 +1,4 @@
-import {
-  createEntity,
-  createEntityBehavior,
-  createEntityResource,
-  lazuli,
-} from "../mod.ts";
+import { createEntity, createEntityBehavior, createEntityResource, lazuli } from "../mod.ts";
 
 Deno.test("Entity Behavior", async () => {
   const entity = createEntityBehavior("test_entity", {

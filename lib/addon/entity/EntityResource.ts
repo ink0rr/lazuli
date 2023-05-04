@@ -12,8 +12,7 @@ export function createEntityResource(
     filePath,
     data,
     preWrite(project) {
-      const { identifier, spawn_egg } =
-        data["minecraft:client_entity"].description;
+      const { identifier, spawn_egg } = data["minecraft:client_entity"].description;
       const id = new Identifier(identifier);
 
       if (id.namespace !== "minecraft") {

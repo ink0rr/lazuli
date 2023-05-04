@@ -2,7 +2,9 @@
   "deno.enable": true,
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
-  "editor.rulers": [80],
+  "editor.rulers": [
+    120
+  ],
   "editor.tabSize": 2,
   "files.eol": "\n",
   "[typescript]": {

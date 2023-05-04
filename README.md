@@ -14,19 +14,20 @@ I'm still not sure how things are implemented and named, so a lot of stuff are l
 
 Lazuli will automatically detect the project paths in your current working directory.
 
-It'll look for a `config.json` file (see: [project-config-standard]) containing the paths to BP and RP folders. If it doesn't find it, it'll look for any folders ending in `BP` and `RP` (case insensitive) instead. The 2 folders must have identical name aside from the `BP` and `RP` suffix.
+It'll look for a `config.json` file (see: [project-config-standard]) containing the paths to BP and RP folders. If it
+doesn't find it, it'll look for any folders ending in `BP` and `RP` (case insensitive) instead. The 2 folders must have
+identical name aside from the `BP` and `RP` suffix.
 
-This helps you write scripts that would work on most projects without having to worry about how the project is structured.
+This helps you write scripts that would work on most projects without having to worry about how the project is
+structured.
 
 ## Usage
 
-You can pass any class that derives from `AddonFile` to the `lazuli` function, and it'll write the file to their designated path.
+You can pass any class that derives from `AddonFile` to the `lazuli` function, and it'll write the file to their
+designated path.
 
 ```ts
-import {
-  createEntityBehavior,
-  lazuli,
-} from "https://deno.land/x/lazuli/mod.ts";
+import { createEntityBehavior, lazuli } from "https://deno.land/x/lazuli/mod.ts";
 
 const myEntity = createEntityBehavior("my_entity", {
   format_version: "1.19.50",
@@ -57,7 +58,8 @@ const myEntity = createEntityBehavior("custom/my_entity", {
 });
 ```
 
-That's pretty much it. You can also use the `createEntity` function to create an entity quickly with some default values.
+That's pretty much it. You can also use the `createEntity` function to create an entity quickly with some default
+values.
 
 ```ts
 import { createEntity, lazuli } from "https://deno.land/x/lazuli/mod.ts";
@@ -124,7 +126,7 @@ export default myEntity;
 You can also default export an array.
 
 ```ts
-import { createEntity, createBlock } from "https://deno.land/x/lazuli/mod.ts";
+import { createBlock, createEntity } from "https://deno.land/x/lazuli/mod.ts";
 
 const myEntity = createEntity({
   identifier: "lazuli:my_entity",
@@ -143,7 +145,8 @@ If you default export anything else, it'll just be ignored.
 
 ## Contributing
 
-Contributions are welcome. There are probably a lot of questionable design decisions here, so please open an issue if you have any ideas to help improve this library.
+Contributions are welcome. There are probably a lot of questionable design decisions here, so please open an issue if
+you have any ideas to help improve this library.
 
 ## Credits
 

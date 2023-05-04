@@ -7,8 +7,7 @@ export const query = Object.freeze({
   /**
    * Returns the height of the block immediately above the highest solid block at the input (x,z) position
    */
-  above_top_solid: (x: number, z: number) =>
-    `query.above_top_solid(${join(x, z)})`,
+  above_top_solid: (x: number, z: number) => `query.above_top_solid(${join(x, z)})`,
 
   /**
    * Returns the number of actors rendered in the last frame.
@@ -18,8 +17,7 @@ export const query = Object.freeze({
   /**
    * Requires at least 3 arguments. Evaluates the first argument, then returns 1.0 if all of the following arguments evaluate to the same value as the first. Otherwise it returns 0.0.
    */
-  all: (...params: [unknown, unknown, unknown, ...unknown[]]) =>
-    `query.all(${join(...params)})`,
+  all: (...params: [unknown, unknown, unknown, ...unknown[]]) => `query.all(${join(...params)})`,
 
   /**
    * Only valid in an animation controller. Returns 1.0 if all animations in the current animation controller state have played through at least once, else it returns 0.0.
@@ -44,8 +42,7 @@ export const query = Object.freeze({
   /**
    * Requires at least 3 arguments. Evaluates the first argument, then returns 1.0 if any of the following arguments evaluate to the same value as the first. Otherwise it returns 0.0.
    */
-  any: (...params: [unknown, unknown, unknown, ...unknown[]]) =>
-    `query.any(${join(...params)})`,
+  any: (...params: [unknown, unknown, unknown, ...unknown[]]) => `query.any(${join(...params)})`,
 
   /**
    * Only valid in an animation controller. Returns 1.0 if any animation in the current animation controller state has played through at least once, else it returns 0.0.
@@ -263,8 +260,7 @@ export const query = Object.freeze({
   /**
    * Takes the desired hand slot as a parameter (0 or 'main_hand' for main hand, 1 or 'off_hand' for off hand), and returns whether the item is an attachable or not.
    */
-  equipped_item_is_attachable: (slot: 0 | 1) =>
-    `query.equipped_item_is_attachable(${slot})`,
+  equipped_item_is_attachable: (slot: 0 | 1) => `query.equipped_item_is_attachable(${slot})`,
 
   /**
    * Returns the X eye rotation of the entity if it makes sense, else it returns 0.0.
@@ -319,8 +315,7 @@ export const query = Object.freeze({
   /**
    * Usable only in behavior packs when determining the default value for an entity's Property. Requires one string argument. If the entity is being loaded from data that was last saved with a component_group with the specified name, returns 1.0, otherwise returns 0.0. The purpose of this query is to allow entity definitions to change and still be able to load the correct state of entities.
    */
-  had_component_group: (groupName: string) =>
-    `query.had_component_group('${groupName}')`,
+  had_component_group: (groupName: string) => `query.had_component_group('${groupName}')`,
 
   /**
    * Returns 1 if the entity has any of the specified families, else 0.
@@ -430,8 +425,7 @@ export const query = Object.freeze({
   /**
    * Requires 3 numerical arguments: some value, a minimum, and a maximum. If the first argument is between the minimum and maximum (inclusive), returns 1.0. Otherwise returns 0.0.
    */
-  in_range: (value: number, min: number, max: number) =>
-    `query.in_range(${join(value, min, max)})`,
+  in_range: (value: number, min: number, max: number) => `query.in_range(${join(value, min, max)})`,
 
   /**
    * Returns the number of ticks of invulnerability the entity has left if it makes sense, else it returns 0.0.
@@ -734,8 +728,7 @@ export const query = Object.freeze({
   /**
    * Takes one or more arguments. Returns whether the root actor identifier is any of the specified strings. A preferred query to query.owner_identifier, as it can be adjusted by Mojang to avoid breaking content if names are changed.
    */
-  is_owner_identifier_any: (...identifiers: Identifier[]) =>
-    `query.is_owner_identifier_any(${join(...identifiers)})`,
+  is_owner_identifier_any: (...identifiers: Identifier[]) => `query.is_owner_identifier_any(${join(...identifiers)})`,
 
   /**
    * Returns 1.0 if the player has a persona or premium skin, else it returns 0.0.
@@ -930,8 +923,7 @@ export const query = Object.freeze({
   /**
    * query.item_slot_to_bone_name requires one parameter: the name of the equipment slot. This function returns the name of the bone this entity has mapped to that slot.
    */
-  item_slot_to_bone_name: (slotName: SlotName) =>
-    `query.item_slot_to_bone_name(${slotName})`,
+  item_slot_to_bone_name: (slotName: SlotName) => `query.item_slot_to_bone_name(${slotName})`,
 
   /**
    * Returns the ratio between the previous and next key frames.
@@ -966,8 +958,7 @@ export const query = Object.freeze({
   /**
    * Takes an array of distances and returns the zero - based index of which range the actor is in based on distance from the camera. For example, 'query.lod_index(10, 20, 30)' will return 0, 1, or 2 based on whether the mob is less than 10, 20, or 30 units away from the camera, or it will return 3 if it is greater than 30.
    */
-  lod_index: (...distances: number[]) =>
-    `query.lod_index(${join(...distances)})`,
+  lod_index: (...distances: number[]) => `query.lod_index(${join(...distances)})`,
 
   /**
    * debug log a value to the content log
@@ -1162,8 +1153,7 @@ export const query = Object.freeze({
   /**
    * Returns the texture coordinate for generating particles for the block located in the surface below the actor (scanned up to 10 blocks down) in a struct with 'u' and 'v' keys. If no actor is specified or if no surface is found, u and v will be 0.0. Available on the Client (Resource Packs) only.
    */
-  surface_particle_texture_coordinate:
-    `query.surface_particle_texture_coordinate`,
+  surface_particle_texture_coordinate: `query.surface_particle_texture_coordinate`,
 
   /**
    * Returns the texture size for generating particles for the block located in the surface below the actor (scanned up to 10 blocks down). If no actor is specified or if no surface is found, each member value will be 0.0. Available on the Client (Resource Packs) only.
@@ -1213,8 +1203,7 @@ export const query = Object.freeze({
   /**
    * Returns the time in seconds since the last vibration detected by the actor. On errors or if no vibration has been detected yet, returns -1. Available on the Client (Resource Packs) only.
    */
-  time_since_last_vibration_detection:
-    `query.time_since_last_vibration_detection`,
+  time_since_last_vibration_detection: `query.time_since_last_vibration_detection`,
 
   /**
    * Returns the current time stamp of the level
