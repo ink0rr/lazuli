@@ -91,9 +91,9 @@ export class Project {
   }
 
   get blocks() {
-    this.#blocks ??= {
-      format_version: [1, 1, 0],
-    };
+    this.#blocks ??= {};
+    // @ts-expect-error: Cannot define format_version on the type
+    this.#blocks.format_version = [1, 1, 0];
     return this.#blocks;
   }
 
