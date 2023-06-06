@@ -32,9 +32,7 @@ export class Project {
       Deno.statSync(packs.resourcePack);
       return [packs.behaviorPack, packs.resourcePack];
     } catch {
-      const dirs = Array.from(Deno.readDirSync(".")).filter((entry, _i) =>
-        entry.isDirectory
-      );
+      const dirs = Array.from(Deno.readDirSync(".")).filter((entry, _i) => entry.isDirectory);
       const BP = dirs.find((dir) => dir.name.match(/bp$/i))?.name;
       const RP = dirs.find((dir) => dir.name.match(/rp$/i))?.name;
 
@@ -93,11 +91,10 @@ export class Project {
   }
 
   get blocks() {
-    this.#blocks ??= {
-      // @ts-ignore: ¯\_(ツ)_/¯
-      format_version: [1, 1, 0],
-    };
-    return this.#blocks!;
+    this.#blocks ??= {};
+    // @ts-expect-error: Cannot define format_version on the type
+    this.#blocks.format_version = [1, 1, 0];
+    return this.#blocks;
   }
 
   addItemTexture(name: string, texture: string) {

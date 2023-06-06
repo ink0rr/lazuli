@@ -4,7 +4,13 @@ import { Identifier } from "./Identifier.ts";
 export class Language extends Map<string, string> {
   constructor(text = "") {
     super(
-      text.split(/\r?\n/).map((s) => s.split("=") as [string, string]),
+      text.split(/\r?\n/).map((s, i) => {
+        let [key, value] = s.split("=");
+        if (key === "") {
+          key = `_${i}_`;
+        }
+        return [key, value];
+      }),
     );
   }
 
@@ -14,12 +20,14 @@ export class Language extends Map<string, string> {
   }
 
   toString(): string {
-    return [...this.entries()].map((arr) => {
-      if (arr[0].length === 0 || arr[0].startsWith("##")) {
-        return arr[0];
+    let lang = "";
+    for (const [key, value] of this) {
+      lang += `\n${key.replace(/^_\d+_/, "")}`;
+      if (value) {
+        lang += `=${value}`;
       }
-      return arr.join("=");
-    }).join("\n");
+    }
+    return lang.trim();
   }
 
   setBlock(identifier: Identifier, alias?: string) {

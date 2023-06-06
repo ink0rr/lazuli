@@ -1,9 +1,4 @@
-import {
-  createItem,
-  createItemBehavior,
-  createItemResource,
-  lazuli,
-} from "../mod.ts";
+import { createItem, createItemBehavior, createItemResource, lazuli } from "../mod.ts";
 
 Deno.test("Item Behavior", async () => {
   const item = createItemBehavior("test_item", {
