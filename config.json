@@ -1,6 +1,0 @@
-{
-  "packs": {
-    "behaviorPack": "./temp/BP",
-    "resourcePack": "./temp/RP"
-  }
-}
