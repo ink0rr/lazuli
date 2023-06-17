@@ -2,7 +2,7 @@ import { JSONC } from "../../deps.ts";
 import { outputFile, outputFileSync } from "./file.ts";
 
 function stringify(obj: unknown): string {
-  return JSON.stringify(obj, null, 2) + "\n";
+  return JSON.stringify(obj, null, 2);
 }
 
 /**
