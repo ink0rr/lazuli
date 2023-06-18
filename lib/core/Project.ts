@@ -22,12 +22,23 @@ const paths = {
   },
 };
 
+const queue = new Map<string, unknown>();
+
+const actions = {
+  writeBP(path: string, data: unknown) {
+    queue.set(join(paths.BP, path), data);
+  },
+  writeRP(path: string, data: unknown) {
+    queue.set(join(paths.RP, path), data);
+  },
+};
+type Actions = typeof actions;
+const onSaves: ((actions: Actions) => void)[] = [];
+
 let blocks: Blocks | undefined;
 let item_texture: Textures | undefined;
 let terrain_texture: Textures | undefined;
 let lang: Language | undefined;
-
-const queue = new Map<string, unknown>();
 
 export const Project = Object.freeze({
   async load(packs?: { BP: string; RP: string }) {
@@ -91,15 +102,14 @@ export const Project = Object.freeze({
     return lang;
   },
 
-  writeBP(path: string, data: unknown) {
-    queue.set(join(paths.BP, path), data);
-  },
-
-  writeRP(path: string, data: unknown) {
-    queue.set(join(paths.RP, path), data);
+  onSave(callback: (actions: Actions) => void) {
+    onSaves.push(callback);
   },
 
   async save() {
+    for (const f of onSaves) {
+      f(actions);
+    }
     if (blocks) queue.set(paths.blocks, blocks);
     if (item_texture) queue.set(paths.item_texture, item_texture);
     if (terrain_texture) queue.set(paths.terrain_texture, terrain_texture);
