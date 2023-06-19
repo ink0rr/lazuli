@@ -10,6 +10,7 @@ export * from "./lib/bedrock/common/SpellEffects.ts";
 export * from "./lib/bedrock/entity/Entity.ts";
 export * from "./lib/bedrock/entity/EntityBehavior.ts";
 export * from "./lib/bedrock/entity/EntityResource.ts";
+export * from "./lib/bedrock/item/Item.ts";
 
 export * from "./lib/fs/file.ts";
 export * from "./lib/fs/json.ts";
