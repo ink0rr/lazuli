@@ -114,6 +114,10 @@ export class EntityBehavior extends IdentifierAddonFile {
     return this.#entity.component_groups?.[key];
   }
 
+  getComponentGroups() {
+    return Object.entries(this.#entity.component_groups ?? {});
+  }
+
   editComponentGroup(key: string, callback: (data?: EntityComponents) => EntityComponents) {
     const componentGroup = this.getComponentGroup(key);
     this.componentGroups({ [key]: callback(componentGroup) });
@@ -125,6 +129,10 @@ export class EntityBehavior extends IdentifierAddonFile {
 
   getEvent(key: string) {
     return this.#entity.events?.[key];
+  }
+
+  getEvents() {
+    return Object.entries(this.#entity.events ?? {});
   }
 
   editEvent(key: string, callback: (data?: Event) => Event) {
