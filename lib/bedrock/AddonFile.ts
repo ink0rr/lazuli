@@ -1,25 +1,10 @@
-import { join } from "../../deps.ts";
 import { Identifier } from "../core/Identifier.ts";
 
 export abstract class AddonFile {
-  #name: string;
-  #dir?: string;
-  #fileName?: string;
-  constructor(name: string, dir?: string) {
-    this.#name = name;
-    this.#dir = dir;
-  }
-
   /**
-   * File name without extension
+   * @param fileName File name without extension
    */
-  get fileName() {
-    return this.#fileName ?? join(this.#dir ?? "", this.#name);
-  }
-
-  set fileName(value) {
-    this.#fileName = value;
-  }
+  constructor(public fileName: string) {}
 }
 
 export abstract class IdentifierAddonFile {
