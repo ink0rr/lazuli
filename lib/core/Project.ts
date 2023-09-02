@@ -47,24 +47,19 @@ export const Project = Object.freeze({
       paths.RP = packs.RP;
     }
 
-    // Ignore read errors to avoid creating files when not needed
-    const ignore = () => {};
-    await Promise.all([
+    await Promise.allSettled([
       readJson<Blocks>(paths.blocks).then((data) => {
         blocks = data;
-      }).catch(ignore),
-
+      }),
       readJson<Textures>(paths.item_texture).then((data) => {
         item_texture = data;
-      }).catch(ignore),
-
+      }),
       readJson<Textures>(paths.terrain_texture).then((data) => {
         terrain_texture = data;
-      }).catch(ignore),
-
+      }),
       Deno.readTextFile(paths.lang).then((text) => {
         lang = new Language(text);
-      }).catch(ignore),
+      }),
     ]);
   },
 
