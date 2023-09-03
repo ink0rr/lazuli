@@ -1,4 +1,5 @@
 import { Project } from "../../core/Project.ts";
+import { Accessor } from "../../utils/Accessor.ts";
 import { addAnimation } from "../../utils/addAnimation.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { StringOrRecord } from "../common/StringOrRecord.ts";
@@ -77,25 +78,29 @@ export class EntityBehavior extends IdentifierAddonFile {
     addAnimation(this.#entity.description, key, animation, condition);
   }
 
-  properties(properties: Record<string, Property>) {
+  addProperties(properties: Record<string, Property>) {
     Object.assign(this.#entity.description.properties ??= {}, properties);
+  }
+
+  editProperty(key: string, callback: (data?: Property) => Property) {
+    const property = this.getProperty(key);
+    this.addProperties({ [key]: callback(property) });
   }
 
   getProperty(key: string) {
     return this.#entity.description.properties?.[key];
   }
 
-  editProperty(key: string, callback: (data?: Property) => Property) {
-    const property = this.getProperty(key);
-    this.properties({ [key]: callback(property) });
+  getProperties() {
+    return Object.entries(this.#entity.description.properties ?? {});
   }
 
-  components(components: EntityComponents) {
+  setProperties(properties: Record<string, Property>) {
+    this.#entity.description.properties = properties;
+  }
+
+  addComponents(components: EntityComponents) {
     Object.assign(this.#entity.components ??= {}, components);
-  }
-
-  getComponent<Key extends keyof EntityComponents>(component: Key) {
-    return this.#entity.components?.[component];
   }
 
   editComponent<Key extends keyof EntityComponents>(
@@ -103,28 +108,50 @@ export class EntityBehavior extends IdentifierAddonFile {
     callback: (data: EntityComponents[Key]) => EntityComponents[Key],
   ) {
     const component = this.getComponent(key);
-    this.components({ [key]: callback(component) });
+    this.addComponents({ [key]: callback(component) });
   }
 
-  componentGroups(componentGroups: Record<string, EntityComponents>) {
+  getComponent<Key extends keyof EntityComponents>(component: Key) {
+    return this.#entity.components?.[component];
+  }
+
+  setComponents(components: EntityComponents) {
+    this.#entity.components = components;
+  }
+
+  addComponentGroups(componentGroups: Record<string, EntityComponents>) {
     Object.assign(this.#entity.component_groups ??= {}, componentGroups);
   }
 
+  editComponentGroup(key: string, callback: (data?: Accessor<EntityComponents>) => void) {
+    const componentGroup = this.getComponentGroup(key);
+    callback(componentGroup);
+  }
+
   getComponentGroup(key: string) {
-    return this.#entity.component_groups?.[key];
+    const componentGroup = this.#entity.component_groups?.[key];
+    if (componentGroup) {
+      return new Accessor(componentGroup);
+    }
   }
 
   getComponentGroups() {
-    return Object.entries(this.#entity.component_groups ?? {});
+    return Object.entries(this.#entity.component_groups ?? {}).map(([key, value]) =>
+      [key, new Accessor(value)] as const
+    );
   }
 
-  editComponentGroup(key: string, callback: (data?: EntityComponents) => EntityComponents) {
-    const componentGroup = this.getComponentGroup(key);
-    this.componentGroups({ [key]: callback(componentGroup) });
+  setComponentGroups(componentGroups: Record<string, EntityComponents>) {
+    this.#entity.component_groups = componentGroups;
   }
 
-  events(events: Events) {
+  addEvents(events: Events) {
     Object.assign(this.#entity.events ??= {}, events);
+  }
+
+  editEvent(key: string, callback: (data?: Event) => Event) {
+    const event = this.getEvent(key);
+    this.addEvents({ [key]: callback(event) });
   }
 
   getEvent(key: string) {
@@ -135,9 +162,8 @@ export class EntityBehavior extends IdentifierAddonFile {
     return Object.entries(this.#entity.events ?? {});
   }
 
-  editEvent(key: string, callback: (data?: Event) => Event) {
-    const event = this.getEvent(key);
-    this.events({ [key]: callback(event) });
+  setEvents(events: Events) {
+    this.#entity.events = events;
   }
 
   /**

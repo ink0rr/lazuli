@@ -11,7 +11,6 @@ export class Entity extends IdentifierAddonFile {
 
   alias?: string;
   rideHint?: string | true;
-
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
     this.#behavior = new EntityBehavior(identifier, dir);
@@ -29,7 +28,7 @@ export class Entity extends IdentifierAddonFile {
         if (this.behavior.isSpawnable) {
           Project.lang.setSpawnEgg(id, alias);
         }
-        if (this.resource.spawnEgg?.texture === id.name) {
+        if (this.resource.getSpawnEgg()?.texture === id.name) {
           Project.setItemTexture(id.name, `spawn_egg/${this.fileName}`);
         }
       }

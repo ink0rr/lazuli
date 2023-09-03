@@ -46,16 +46,40 @@ export class EntityResource extends IdentifierAddonFile {
     this.#data.format_version = value;
   }
 
-  materials(materials: Record<string, string>) {
+  addMaterials(materials: Record<string, string>) {
     Object.assign(this.#entity.materials ??= {}, materials);
   }
 
-  textures(textures: Record<string, string>) {
+  getMaterial(key: string) {
+    return this.#entity.materials?.[key];
+  }
+
+  setMaterials(materials: Record<string, string>) {
+    this.#entity.materials = materials;
+  }
+
+  addTextures(textures: Record<string, string>) {
     Object.assign(this.#entity.textures ??= {}, textures);
   }
 
-  geometry(geometry: Record<string, string>) {
+  getTexture(key: string) {
+    return this.#entity.textures?.[key];
+  }
+
+  setTextures(textures: Record<string, string>) {
+    this.#entity.textures = textures;
+  }
+
+  addGeometry(geometry: Record<string, string>) {
     Object.assign(this.#entity.geometry ??= {}, geometry);
+  }
+
+  getGeometry(key: string) {
+    return this.#entity.geometry?.[key];
+  }
+
+  setGeometry(geometry: Record<string, string>) {
+    this.#entity.geometry = geometry;
   }
 
   get scripts() {
@@ -70,24 +94,48 @@ export class EntityResource extends IdentifierAddonFile {
     addAnimation(this.#entity, key, animation, condition);
   }
 
-  particleEffects(particleEffects: Record<string, string>) {
+  addParticleEffects(particleEffects: Record<string, string>) {
     Object.assign(this.#entity.particle_effects ??= {}, particleEffects);
   }
 
-  particleEmitters(particleEmitters: Record<string, string>) {
+  getParticleEffect(key: string) {
+    return this.#entity.particle_effects?.[key];
+  }
+
+  setParticleEffects(particleEffects: Record<string, string>) {
+    this.#entity.particle_effects = particleEffects;
+  }
+
+  addParticleEmitters(particleEmitters: Record<string, string>) {
     Object.assign(this.#entity.particle_emitters ??= {}, particleEmitters);
   }
 
-  soundEffects(soundEffects: Record<string, string>) {
+  getParticleEmitter(key: string) {
+    return this.#entity.particle_emitters?.[key];
+  }
+
+  setParticleEmitters(particleEmitters: Record<string, string>) {
+    this.#entity.particle_emitters = particleEmitters;
+  }
+
+  addSoundEffects(soundEffects: Record<string, string>) {
     Object.assign(this.#entity.sound_effects ??= {}, soundEffects);
   }
 
-  get spawnEgg() {
+  getSoundEffect(key: string) {
+    return this.#entity.sound_effects?.[key];
+  }
+
+  setSoundEffects(soundEffects: Record<string, string>) {
+    this.#entity.sound_effects = soundEffects;
+  }
+
+  getSpawnEgg() {
     return this.#entity.spawn_egg;
   }
 
-  set spawnEgg(value) {
-    this.#entity.spawn_egg = value;
+  setSpawnEgg(spawnEgg: SpawnEgg) {
+    this.#entity.spawn_egg = spawnEgg;
   }
 
   get renderControllers() {

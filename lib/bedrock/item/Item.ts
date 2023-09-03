@@ -3,18 +3,23 @@ import { IdentifierAddonFile } from "../AddonFile.ts";
 import { ItemComponents } from "./types/ItemComponents.ts";
 
 export class Item extends IdentifierAddonFile {
-  #components: ItemComponents;
-  category?: "construction" | "equipment" | "items" | "nature";
+  #data: ItemSchema;
 
   alias?: string;
-
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
-    const id = this.identifier;
-    this.#components = {
-      "minecraft:icon": id.name,
+    this.#data = {
+      format_version: "1.10.0",
+      "minecraft:item": {
+        description: {
+          identifier,
+          category: "items",
+        },
+        components: {
+          "minecraft:icon": this.identifier.name,
+        },
+      },
     };
-    this.category = "items";
 
     Project.onSave(({ writeBP, writeRP }) => {
       const {
@@ -23,7 +28,7 @@ export class Item extends IdentifierAddonFile {
         "minecraft:render_offsets": render_offset,
         "minecraft:use_animation": use_animation,
         ...behaviorComponents
-      } = this.#components;
+      } = this.#item.components ?? {};
 
       const resourceComponents: ItemComponents = {
         "minecraft:hover_text_color": hover_text_color,
@@ -54,6 +59,7 @@ export class Item extends IdentifierAddonFile {
       writeBP(`items/${this.fileName}.json`, behavior);
       writeRP(`items/${this.fileName}.json`, resource);
 
+      const id = this.identifier;
       if (id.namespace !== "minecraft") {
         const { alias } = this;
         Project.lang.setItem(id, alias);
@@ -65,12 +71,28 @@ export class Item extends IdentifierAddonFile {
     });
   }
 
-  components(value: ItemComponents) {
-    Object.assign(this.#components, value);
+  get #item() {
+    return this.#data["minecraft:item"];
   }
 
-  getComponent<Key extends keyof ItemComponents>(component: Key) {
-    return this.#components[component];
+  get formatVersion() {
+    return this.#data.format_version;
+  }
+
+  set formatVersion(value) {
+    this.#data.format_version = value;
+  }
+
+  get category() {
+    return this.#item.description.category;
+  }
+
+  set category(value) {
+    this.#item.description.category = value;
+  }
+
+  addComponents(components: ItemComponents) {
+    Object.assign(this.#item.components ??= {}, components);
   }
 
   editComponent<Key extends keyof ItemComponents>(
@@ -78,7 +100,15 @@ export class Item extends IdentifierAddonFile {
     callback: (data: ItemComponents[Key]) => ItemComponents[Key],
   ) {
     const component = this.getComponent(key);
-    this.components({ [key]: callback(component) });
+    this.addComponents({ [key]: callback(component) });
+  }
+
+  getComponent<Key extends keyof ItemComponents>(component: Key) {
+    return this.#item.components?.[component];
+  }
+
+  setComponents(components: ItemComponents) {
+    this.#item.components = components;
   }
 }
 

@@ -47,16 +47,40 @@ export class Attachable extends IdentifierAddonFile {
     this.#data.format_version = value;
   }
 
-  materials(materials: Record<string, string>) {
+  addMaterials(materials: Record<string, string>) {
     Object.assign(this.#attachable.materials ??= {}, materials);
   }
 
-  textures(textures: Record<string, string>) {
+  getMaterial(key: string) {
+    return this.#attachable.materials?.[key];
+  }
+
+  setMaterials(materials: Record<string, string>) {
+    this.#attachable.materials = materials;
+  }
+
+  addTextures(textures: Record<string, string>) {
     Object.assign(this.#attachable.textures ??= {}, textures);
   }
 
-  geometry(geometry: Record<string, string>) {
+  getTexture(key: string) {
+    return this.#attachable.textures?.[key];
+  }
+
+  setTextures(textures: Record<string, string>) {
+    this.#attachable.textures = textures;
+  }
+
+  addGeometry(geometry: Record<string, string>) {
     Object.assign(this.#attachable.geometry ??= {}, geometry);
+  }
+
+  getGeometry(key: string) {
+    return this.#attachable.geometry?.[key];
+  }
+
+  setGeometry(geometry: Record<string, string>) {
+    this.#attachable.geometry = geometry;
   }
 
   get scripts() {
