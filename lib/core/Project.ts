@@ -1,133 +1,123 @@
+import { join } from "../../deps.ts";
+import { Blocks } from "../core/Blocks.ts";
+import { Language } from "../core/Language.ts";
+import { Textures } from "../core/Textures.ts";
 import { outputFile } from "../fs/file.ts";
-import { readJson, readJsonSync, writeJson } from "../fs/json.ts";
-import { Blocks } from "./Blocks.ts";
-import { Language } from "./Language.ts";
-import { Textures } from "./Textures.ts";
+import { readJson, writeJson } from "../fs/json.ts";
 
-export class Project {
-  paths;
-  #blocks?: Blocks;
-  #item_texture?: Textures;
-  #terrain_texture?: Textures;
-  #lang?: Language;
+const paths = {
+  BP: "BP",
+  RP: "RP",
+  get blocks() {
+    return join(this.RP, "blocks.json");
+  },
+  get item_texture() {
+    return join(this.RP, "textures/item_texture.json");
+  },
+  get terrain_texture() {
+    return join(this.RP, "textures/terrain_texture.json");
+  },
+  get lang() {
+    return join(this.RP, "texts/en_US.lang");
+  },
+};
 
-  constructor() {
-    const [BP, RP] = this.#findPaths();
-    this.paths = {
-      BP,
-      RP,
-      blocks: `${RP}/blocks.json`,
-      item_texture: `${RP}/textures/item_texture.json`,
-      terrain_texture: `${RP}/textures/terrain_texture.json`,
-      lang: `${RP}/texts/en_US.lang`,
-    };
-  }
+const queue = new Map<string, unknown>();
 
-  #findPaths(): [string, string] {
-    try {
-      const { packs } = readJsonSync<Config>("config.json");
+const actions = {
+  writeBP(path: string, data: unknown) {
+    queue.set(join(paths.BP, path), data);
+  },
+  writeRP(path: string, data: unknown) {
+    queue.set(join(paths.RP, path), data);
+  },
+};
+type Actions = typeof actions;
+const onSaves: ((actions: Actions) => void)[] = [];
 
-      // Check if the paths exist
-      Deno.statSync(packs.behaviorPack);
-      Deno.statSync(packs.resourcePack);
-      return [packs.behaviorPack, packs.resourcePack];
-    } catch {
-      const dirs = Array.from(Deno.readDirSync(".")).filter((entry, _i) => entry.isDirectory);
-      const BP = dirs.find((dir) => dir.name.match(/bp$/i))?.name;
-      const RP = dirs.find((dir) => dir.name.match(/rp$/i))?.name;
+let blocks: Blocks | undefined;
+let item_texture: Textures | undefined;
+let terrain_texture: Textures | undefined;
+let lang: Language | undefined;
 
-      // Make sure the paths have matching names aside from the bp/rp suffix
-      if (BP && RP && BP.slice(0, -2) === RP.slice(0, -2)) {
-        return [BP, RP];
-      }
-      throw new Error("Cannot find behavior pack and resource pack folders");
+export const Project = Object.freeze({
+  async load(packs?: { BP: string; RP: string }) {
+    if (packs) {
+      paths.BP = packs.BP;
+      paths.RP = packs.RP;
     }
-  }
 
-  /**
-   * Attempts to load blocks.json, item_texture.json, terrain_texture.json, and en_US.lang
-   */
-  async load() {
-    // Ignore read errors to avoid creating files when not needed
-    const ignore = () => {};
-    await Promise.all([
-      readJson<Blocks>(this.paths.blocks).then((blocks) => {
-        this.#blocks = blocks;
-      }).catch(ignore),
-
-      readJson<Textures>(this.paths.item_texture).then((item_texture) => {
-        this.#item_texture = item_texture;
-      }).catch(ignore),
-
-      readJson<Textures>(this.paths.terrain_texture).then((terrain_texture) => {
-        this.#terrain_texture = terrain_texture;
-      }).catch(ignore),
-
-      Deno.readTextFile(this.paths.lang).then((lang) => {
-        this.#lang = new Language(lang);
-      }).catch(ignore),
+    await Promise.allSettled([
+      readJson<Blocks>(paths.blocks).then((data) => {
+        blocks = data;
+      }),
+      readJson<Textures>(paths.item_texture).then((data) => {
+        item_texture = data;
+      }),
+      readJson<Textures>(paths.terrain_texture).then((data) => {
+        terrain_texture = data;
+      }),
+      Deno.readTextFile(paths.lang).then((text) => {
+        lang = new Language(text);
+      }),
     ]);
-    return this;
-  }
-
-  /**
-   * Write changes on blocks.json, item_texture.json, terrain_texture.json, and en_US.lang
-   * @returns A promise that resolves when all files have been written
-   */
-  sync(): Promise<void[]> {
-    return Promise.all([
-      this.#blocks &&
-      writeJson(this.paths.blocks, this.#blocks),
-
-      this.#item_texture &&
-      writeJson(this.paths.item_texture, this.#item_texture),
-
-      this.#terrain_texture &&
-      writeJson(this.paths.terrain_texture, this.#terrain_texture),
-
-      this.#lang &&
-      outputFile(this.paths.lang, this.#lang.toString()),
-    ]);
-  }
+  },
 
   get blocks() {
-    this.#blocks ??= {};
-    // @ts-expect-error: Cannot define format_version on the type
-    this.#blocks.format_version = [1, 1, 0];
-    return this.#blocks;
-  }
+    blocks ??= {};
+    // @ts-expect-error: Can't define format_version on the type
+    blocks.format_version = "1.19.30";
+    return blocks;
+  },
 
-  addItemTexture(name: string, texture: string) {
-    this.#item_texture ??= {
+  setItemTexture(name: string, texture: string) {
+    item_texture ??= {
       resource_pack_name: "pack.name",
       texture_name: "atlas.items",
       texture_data: {},
     };
-    this.#item_texture.texture_data[name] = {
+    item_texture.texture_data[name] = {
       textures: `textures/items/${texture}`,
     };
-  }
+  },
 
-  addTerrainTexture(name: string, texture: string) {
-    this.#terrain_texture ??= {
+  setTerrainTexture(name: string, texture: string) {
+    terrain_texture ??= {
       resource_pack_name: "pack.name",
       texture_name: "atlas.terrain",
       texture_data: {},
     };
-    this.#terrain_texture.texture_data[name] = {
+    terrain_texture.texture_data[name] = {
       textures: `textures/blocks/${texture}`,
     };
-  }
+  },
 
   get lang() {
-    this.#lang ??= new Language();
-    return this.#lang;
-  }
-}
+    lang ??= new Language("");
+    return lang;
+  },
 
-interface Config {
-  packs: {
-    behaviorPack: string;
-    resourcePack: string;
-  };
-}
+  onSave(callback: (actions: Actions) => void) {
+    onSaves.push(callback);
+  },
+
+  async save() {
+    for (const f of onSaves) {
+      f(actions);
+    }
+    if (blocks) queue.set(paths.blocks, blocks);
+    if (item_texture) queue.set(paths.item_texture, item_texture);
+    if (terrain_texture) queue.set(paths.terrain_texture, terrain_texture);
+    if (lang) queue.set(paths.lang, lang.toString());
+
+    const promises = [];
+    for (const [path, data] of queue) {
+      if (typeof data === "string") {
+        promises.push(outputFile(path, data));
+      } else {
+        promises.push(writeJson(path, data));
+      }
+    }
+    await Promise.all(promises);
+  },
+});

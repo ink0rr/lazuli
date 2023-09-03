@@ -1,4 +1,4 @@
-import { StringOrRecord } from "../schemas/mod.ts";
+import { StringOrRecord } from "../bedrock/common/StringOrRecord.ts";
 
 interface DescriptionLike {
   scripts?: {

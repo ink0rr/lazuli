@@ -27,7 +27,7 @@ export class Language extends Map<string, string> {
         lang += `=${value}`;
       }
     }
-    return lang.trim();
+    return lang;
   }
 
   setBlock(identifier: Identifier, alias?: string) {
