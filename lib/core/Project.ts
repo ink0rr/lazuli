@@ -76,7 +76,7 @@ export const Project = Object.freeze({
       texture_name: "atlas.items",
       texture_data: {},
     };
-    item_texture.texture_data[name] = {
+    item_texture.texture_data[name] ??= {
       textures: `textures/items/${texture}`,
     };
   },
@@ -87,7 +87,7 @@ export const Project = Object.freeze({
       texture_name: "atlas.terrain",
       texture_data: {},
     };
-    terrain_texture.texture_data[name] = {
+    terrain_texture.texture_data[name] ??= {
       textures: `textures/blocks/${texture}`,
     };
   },
