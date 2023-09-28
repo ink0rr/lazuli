@@ -178,7 +178,7 @@ export class EntityResource extends IdentifierAddonFile {
 }
 
 export interface EntityResourceSchema {
-  format_version: "1.10.0";
+  format_version: string;
   "minecraft:client_entity": {
     description: {
       identifier: string;

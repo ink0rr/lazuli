@@ -127,7 +127,7 @@ export class Attachable extends IdentifierAddonFile {
 }
 
 export interface AttachableSchema {
-  format_version: "1.10.0";
+  format_version: string;
   "minecraft:attachable": {
     description: {
       identifier: string;
