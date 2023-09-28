@@ -13,7 +13,7 @@ export class EntityBehavior extends IdentifierAddonFile {
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
     this.#data = {
-      format_version: "1.16.0",
+      format_version: "1.19.80",
       "minecraft:entity": {
         description: {
           identifier,
