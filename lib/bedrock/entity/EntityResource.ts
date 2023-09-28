@@ -90,6 +90,14 @@ export class EntityResource extends IdentifierAddonFile {
     this.#entity.scripts = value;
   }
 
+  get animations() {
+    return this.#entity.animations;
+  }
+
+  set animations(value) {
+    this.#entity.animations = value;
+  }
+
   addAnimation(key: string, animation: string, condition?: string | true) {
     addAnimation(this.#entity, key, animation, condition);
   }
@@ -178,14 +186,13 @@ export class EntityResource extends IdentifierAddonFile {
 }
 
 export interface EntityResourceSchema {
-  format_version: "1.10.0";
+  format_version: string;
   "minecraft:client_entity": {
     description: {
       identifier: string;
       materials?: Record<string, string>;
       textures?: Record<string, string>;
       geometry?: Record<string, string>;
-      animations?: Record<string, string>;
       scripts?: {
         animate?: StringOrRecord[];
         initialize?: string[];
@@ -195,6 +202,7 @@ export interface EntityResourceSchema {
         should_update_effects_offscreen?: string | number | boolean;
         variables?: Record<string, "public">;
       };
+      animations?: Record<string, string>;
       particle_effects?: Record<string, string>;
       particle_emitters?: Record<string, string>;
       sound_effects?: Record<string, string>;

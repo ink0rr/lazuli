@@ -7,6 +7,8 @@ export * from "./lib/bedrock/common/RawText.ts";
 export * from "./lib/bedrock/common/SpellEffects.ts";
 export * from "./lib/bedrock/common/query.ts";
 
+export * from "./lib/bedrock/animation_controllers/AnimationControllers.ts";
+export * from "./lib/bedrock/animations/Animations.ts";
 export * from "./lib/bedrock/attachable/Attachable.ts";
 export * from "./lib/bedrock/entity/Entity.ts";
 export * from "./lib/bedrock/entity/EntityBehavior.ts";

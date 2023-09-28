@@ -3,8 +3,6 @@ import { IdentifierAddonFile } from "../AddonFile.ts";
 import { EntityBehavior } from "./EntityBehavior.ts";
 import { EntityResource } from "./EntityResource.ts";
 
-type HideProps = "identifier" | "fileName";
-
 export class Entity extends IdentifierAddonFile {
   #behavior: EntityBehavior;
   #resource: EntityResource;
@@ -40,11 +38,11 @@ export class Entity extends IdentifierAddonFile {
     this.#resource.fileName = value;
   }
 
-  get behavior(): Omit<EntityBehavior, HideProps> {
+  get behavior(): EntityBehavior {
     return this.#behavior;
   }
 
-  get resource(): Omit<EntityResource, HideProps> {
+  get resource(): EntityResource {
     return this.#resource;
   }
 }

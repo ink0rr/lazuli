@@ -91,6 +91,14 @@ export class Attachable extends IdentifierAddonFile {
     this.#attachable.scripts = value;
   }
 
+  get animations() {
+    return this.#attachable.animations;
+  }
+
+  set animations(value) {
+    this.#attachable.animations = value;
+  }
+
   addAnimation(key: string, animation: string, condition?: string | true) {
     addAnimation(this.#attachable, key, animation, condition);
   }
@@ -127,7 +135,7 @@ export class Attachable extends IdentifierAddonFile {
 }
 
 export interface AttachableSchema {
-  format_version: "1.10.0";
+  format_version: string;
   "minecraft:attachable": {
     description: {
       identifier: string;
@@ -135,7 +143,6 @@ export interface AttachableSchema {
       materials?: Record<string, string>;
       textures?: Record<string, string>;
       geometry?: Record<string, string>;
-      animations?: Record<string, string>;
       scripts?: {
         animate?: StringOrRecord[];
         parent_setup?: string;
@@ -143,6 +150,7 @@ export interface AttachableSchema {
         should_update_bones_and_effects_offscreen?: string | number | boolean;
         should_update_effects_offscreen?: string | number | boolean;
       };
+      animations?: Record<string, string>;
       render_controllers?: StringOrRecord[];
       queryable_geometry?: string;
     };
