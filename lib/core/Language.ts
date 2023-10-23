@@ -1,4 +1,3 @@
-import { startCase } from "../../deps.ts";
 import { Identifier } from "./Identifier.ts";
 
 export class Language extends Map<string, string> {
@@ -19,7 +18,7 @@ export class Language extends Map<string, string> {
     return super.set(key, value);
   }
 
-  toString(): string {
+  toString() {
     let lang = "";
     for (const [key, value] of this) {
       lang += `\n${key.replace(/^_\d+_/, "")}`;
@@ -30,33 +29,28 @@ export class Language extends Map<string, string> {
     return lang;
   }
 
-  setBlock(identifier: Identifier, alias?: string) {
+  setBlock(identifier: Identifier, value: string) {
     const key = `tile.${identifier}.name`;
-    const value = alias ?? startCase(identifier.name);
     this.set(key, value);
   }
 
-  setEntity(identifier: Identifier, alias?: string) {
+  setEntity(identifier: Identifier, value: string) {
     const key = `entity.${identifier}.name`;
-    const value = alias ?? startCase(identifier.name);
     this.set(key, value);
   }
 
-  setSpawnEgg(identifier: Identifier, alias?: string) {
+  setSpawnEgg(identifier: Identifier, value: string) {
     const key = `item.spawn_egg.entity.${identifier}.name`;
-    const value = `Spawn ${alias ?? startCase(identifier.name)}`;
     this.set(key, value);
   }
 
-  setRideHint(identifier: Identifier, hint: string | true) {
+  setRideHint(identifier: Identifier, value: string) {
     const key = `action.hint.exit.${identifier}`;
-    const value = hint === true ? "Tap jump to exit" : hint;
     this.set(key, value);
   }
 
-  setItem(identifier: Identifier, alias?: string) {
+  setItem(identifier: Identifier, value: string) {
     const key = `item.${identifier}.name`;
-    const value = alias ?? startCase(identifier.name);
     this.set(key, value);
   }
 }

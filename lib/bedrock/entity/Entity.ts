@@ -1,3 +1,4 @@
+import { startCase } from "../../../deps.ts";
 import { Project } from "../../core/Project.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { EntityBehavior } from "./EntityBehavior.ts";
@@ -7,27 +8,30 @@ export class Entity extends IdentifierAddonFile {
   #behavior: EntityBehavior;
   #resource: EntityResource;
 
-  alias?: string;
-  rideHint?: string | true;
+  alias: string;
+  spawnEgg: string;
+  rideHint?: string;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
     this.#behavior = new EntityBehavior(identifier, dir);
     this.#resource = new EntityResource(identifier, dir);
 
+    this.alias = startCase(identifier);
+    this.spawnEgg = `Spawn ${this.alias}`;
     Project.onSave(() => {
       const id = this.identifier;
       if (id.namespace !== "minecraft") {
-        const { alias, rideHint } = this;
+        const { alias, spawnEgg, rideHint } = this;
         Project.lang.setEntity(id, alias);
 
-        if (rideHint) {
-          Project.lang.setRideHint(id, rideHint);
-        }
         if (this.behavior.isSpawnable) {
-          Project.lang.setSpawnEgg(id, alias);
+          Project.lang.setSpawnEgg(id, spawnEgg);
         }
         if (this.resource.getSpawnEgg()?.texture === id.name) {
           Project.setItemTexture(id.name, `spawn_egg/${this.fileName}`);
+        }
+        if (rideHint) {
+          Project.lang.setRideHint(id, rideHint);
         }
       }
     });
@@ -38,11 +42,11 @@ export class Entity extends IdentifierAddonFile {
     this.#resource.fileName = value;
   }
 
-  get behavior(): EntityBehavior {
+  get behavior() {
     return this.#behavior;
   }
 
-  get resource(): EntityResource {
+  get resource() {
     return this.#resource;
   }
 }
