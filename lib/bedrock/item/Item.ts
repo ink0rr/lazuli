@@ -1,3 +1,4 @@
+import { startCase } from "../../../deps.ts";
 import { Project } from "../../core/Project.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { ItemComponents } from "./types/ItemComponents.ts";
@@ -5,7 +6,7 @@ import { ItemComponents } from "./types/ItemComponents.ts";
 export class Item extends IdentifierAddonFile {
   #data: ItemSchema;
 
-  alias?: string;
+  alias: string;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
     this.#data = {
@@ -20,6 +21,8 @@ export class Item extends IdentifierAddonFile {
         },
       },
     };
+
+    this.alias = startCase(identifier);
 
     Project.onSave(({ writeBP, writeRP }) => {
       const {
