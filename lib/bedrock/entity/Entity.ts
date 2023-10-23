@@ -13,13 +13,13 @@ export class Entity extends IdentifierAddonFile {
   rideHint?: string;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
+    const id = this.identifier;
     this.#behavior = new EntityBehavior(identifier, dir);
     this.#resource = new EntityResource(identifier, dir);
 
-    this.alias = startCase(identifier);
+    this.alias = startCase(id.name);
     this.spawnEgg = `Spawn ${this.alias}`;
     Project.onSave(() => {
-      const id = this.identifier;
       if (id.namespace !== "minecraft") {
         const { alias, spawnEgg, rideHint } = this;
         Project.lang.setEntity(id, alias);
