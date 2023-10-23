@@ -9,6 +9,7 @@ export class Item extends IdentifierAddonFile {
   alias: string;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
+    const id = this.identifier;
     this.#data = {
       format_version: "1.10.0",
       "minecraft:item": {
@@ -22,7 +23,7 @@ export class Item extends IdentifierAddonFile {
       },
     };
 
-    this.alias = startCase(identifier);
+    this.alias = startCase(id.name);
 
     Project.onSave(({ writeBP, writeRP }) => {
       const {
@@ -62,7 +63,6 @@ export class Item extends IdentifierAddonFile {
       writeBP(`items/${this.fileName}.json`, behavior);
       writeRP(`items/${this.fileName}.json`, resource);
 
-      const id = this.identifier;
       if (id.namespace !== "minecraft") {
         const { alias } = this;
         Project.lang.setItem(id, alias);
