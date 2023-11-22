@@ -74,6 +74,22 @@ export class EntityBehavior extends IdentifierAddonFile {
     this.#entity.description.runtime_identifier = value;
   }
 
+  get scripts() {
+    return this.#entity.description.scripts;
+  }
+
+  set scripts(value) {
+    this.#entity.description.scripts = value;
+  }
+
+  get animations() {
+    return this.#entity.description.animations;
+  }
+
+  set animations(value) {
+    this.#entity.description.animations = value;
+  }
+
   addAnimation(key: string, animation: string, condition?: string | true) {
     addAnimation(this.#entity.description, key, animation, condition);
   }
