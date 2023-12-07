@@ -2,6 +2,7 @@ import { startCase } from "../../../deps.ts";
 import { Project } from "../../core/Project.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { ItemComponents } from "./types/ItemComponents.ts";
+import { ItemGroup } from "./types/ItemGroup.ts";
 
 export class Item extends IdentifierAddonFile {
   #data: ItemSchema;
@@ -10,14 +11,18 @@ export class Item extends IdentifierAddonFile {
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
     this.#data = {
-      format_version: "1.10.0",
+      format_version: "1.20.50",
       "minecraft:item": {
         description: {
           identifier,
-          category: "items",
+          menu_category: {
+            category: "items",
+          },
         },
         components: {
-          "minecraft:icon": this.identifier.name,
+          "minecraft:icon": {
+            texture: this.identifier.name,
+          },
         },
       },
     };
@@ -25,49 +30,18 @@ export class Item extends IdentifierAddonFile {
   }
 
   saveTo(project: Project) {
-    const id = this.identifier;
-    project.onSave(({ writeBP, writeRP, itemTextures, lang }) => {
-      const {
-        "minecraft:hover_text_color": hover_text_color,
-        "minecraft:icon": icon,
-        "minecraft:render_offsets": render_offset,
-        "minecraft:use_animation": use_animation,
-        ...behaviorComponents
-      } = this.#item.components ?? {};
+    project.onSave(({ itemTextures, lang, writeBP }) => {
+      writeBP(`items/${this.fileName}.json`, this.#data);
 
-      const resourceComponents: ItemComponents = {
-        "minecraft:hover_text_color": hover_text_color,
-        "minecraft:icon": icon,
-        "minecraft:render_offsets": render_offset,
-        "minecraft:use_animation": use_animation,
-      };
-
-      const behavior: ItemSchema = {
-        format_version: "1.10.0",
-        "minecraft:item": {
-          description: {
-            identifier: `${id}`,
-          },
-          components: behaviorComponents,
-        },
-      };
-      const resource: ItemSchema = {
-        format_version: "1.10.0",
-        "minecraft:item": {
-          description: {
-            identifier: `${id}`,
-            category: this.category,
-          },
-          components: resourceComponents,
-        },
-      };
-      writeBP(`items/${this.fileName}.json`, behavior);
-      writeRP(`items/${this.fileName}.json`, resource);
-
+      const id = this.identifier;
       if (id.namespace !== "minecraft") {
         const { alias } = this;
         lang.setItem(id, alias);
 
+        let icon = this.getComponent("minecraft:icon");
+        if (typeof icon === "object") {
+          icon = icon.texture;
+        }
         if (icon === id.name) {
           itemTextures.set(id.name, `textures/items/${this.fileName}`);
         }
@@ -87,12 +61,12 @@ export class Item extends IdentifierAddonFile {
     this.#data.format_version = value;
   }
 
-  get category() {
-    return this.#item.description.category;
+  get menuCategory() {
+    return this.#item.description.menu_category;
   }
 
-  set category(value) {
-    this.#item.description.category = value;
+  set menuCategory(value) {
+    this.#item.description.menu_category = value;
   }
 
   addComponents(components: ItemComponents) {
@@ -104,6 +78,8 @@ export class Item extends IdentifierAddonFile {
     callback: (data: ItemComponents[Key]) => ItemComponents[Key],
   ) {
     const component = this.getComponent(key);
+    // TODO: create a type for each component
+    // @ts-expect-error: ^^^
     this.addComponents({ [key]: callback(component) });
   }
 
@@ -121,7 +97,11 @@ export interface ItemSchema {
   "minecraft:item": {
     description: {
       identifier: string;
-      category?: "construction" | "equipment" | "items" | "nature";
+      menu_category?: {
+        category?: "commands" | "construction" | "equipment" | "items" | "nature" | "none";
+        group?: ItemGroup;
+        is_hidden_in_commands?: boolean;
+      };
     };
     components?: ItemComponents;
   };
