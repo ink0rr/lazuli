@@ -39,7 +39,7 @@ export class Language extends Map<string, string> {
   }
 
   setItem(identifier: Identifier, value: string) {
-    const key = `item.${identifier}.name`;
+    const key = `item.${identifier}`;
     this.set(key, value);
   }
 
