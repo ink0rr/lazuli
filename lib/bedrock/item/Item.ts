@@ -20,9 +20,7 @@ export class Item extends IdentifierAddonFile {
           },
         },
         components: {
-          "minecraft:icon": {
-            texture: this.identifier.name,
-          },
+          "minecraft:icon": this.identifier.name,
         },
       },
     };
