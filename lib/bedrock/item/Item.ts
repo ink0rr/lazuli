@@ -9,7 +9,6 @@ export class Item extends IdentifierAddonFile {
   alias: string;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
-    const id = this.identifier;
     this.#data = {
       format_version: "1.10.0",
       "minecraft:item": {
@@ -22,10 +21,12 @@ export class Item extends IdentifierAddonFile {
         },
       },
     };
+    this.alias = startCase(this.identifier.name);
+  }
 
-    this.alias = startCase(id.name);
-
-    Project.onSave(({ writeBP, writeRP }) => {
+  saveTo(project: Project) {
+    const id = this.identifier;
+    project.onSave(({ writeBP, writeRP, itemTextures, lang }) => {
       const {
         "minecraft:hover_text_color": hover_text_color,
         "minecraft:icon": icon,
@@ -45,7 +46,7 @@ export class Item extends IdentifierAddonFile {
         format_version: "1.10.0",
         "minecraft:item": {
           description: {
-            identifier,
+            identifier: `${id}`,
           },
           components: behaviorComponents,
         },
@@ -54,7 +55,7 @@ export class Item extends IdentifierAddonFile {
         format_version: "1.10.0",
         "minecraft:item": {
           description: {
-            identifier,
+            identifier: `${id}`,
             category: this.category,
           },
           components: resourceComponents,
@@ -65,10 +66,10 @@ export class Item extends IdentifierAddonFile {
 
       if (id.namespace !== "minecraft") {
         const { alias } = this;
-        Project.lang.setItem(id, alias);
+        lang.setItem(id, alias);
 
         if (icon === id.name) {
-          Project.setItemTexture(id.name, this.fileName);
+          itemTextures.set(id.name, `textures/items/${this.fileName}`);
         }
       }
     });

@@ -28,8 +28,10 @@ export class EntityResource extends IdentifierAddonFile {
         },
       },
     };
+  }
 
-    Project.onSave(({ writeRP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeRP }) => {
       writeRP(`entity/${this.fileName}.json`, this.#data);
     });
   }
