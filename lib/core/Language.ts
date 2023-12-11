@@ -18,17 +18,6 @@ export class Language extends Map<string, string> {
     return super.set(key, value);
   }
 
-  toString() {
-    let lang = "";
-    for (const [key, value] of this) {
-      lang += `\n${key.replace(/^_\d+_/, "")}`;
-      if (value) {
-        lang += `=${value}`;
-      }
-    }
-    return lang;
-  }
-
   setBlock(identifier: Identifier, value: string) {
     const key = `tile.${identifier}.name`;
     this.set(key, value);
@@ -50,7 +39,18 @@ export class Language extends Map<string, string> {
   }
 
   setItem(identifier: Identifier, value: string) {
-    const key = `item.${identifier}.name`;
+    const key = `item.${identifier}`;
     this.set(key, value);
+  }
+
+  toString() {
+    let lang = "";
+    for (const [key, value] of this) {
+      lang += `\n${key.replace(/^_\d+_/, "")}`;
+      if (value) {
+        lang += `=${value}`;
+      }
+    }
+    return lang;
   }
 }

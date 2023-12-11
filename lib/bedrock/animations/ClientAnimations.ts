@@ -12,8 +12,10 @@ export class ClientAnimations extends AddonFile {
       format_version: "1.8.0",
       animations: {},
     };
+  }
 
-    Project.onSave(({ writeRP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeRP }) => {
       writeRP(`animations/${this.fileName}.json`, this.#data);
     });
   }

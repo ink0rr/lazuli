@@ -10,8 +10,10 @@ export class ClientAnimationControllers extends AddonFile {
       format_version: "1.10.0",
       animation_controllers: {},
     };
+  }
 
-    Project.onSave(({ writeRP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeRP }) => {
       writeRP(`animation_controllers/${this.fileName}.json`, this.#data);
     });
   }

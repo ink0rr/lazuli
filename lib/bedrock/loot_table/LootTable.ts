@@ -9,8 +9,10 @@ export class LootTable extends AddonFile {
     this.#data = {
       pools: [],
     };
+  }
 
-    Project.onSave(({ writeBP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeBP }) => {
       writeBP(`loot_tables/${this.fileName}.json`, this.#data);
     });
   }

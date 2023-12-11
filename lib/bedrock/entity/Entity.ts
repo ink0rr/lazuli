@@ -13,25 +13,27 @@ export class Entity extends IdentifierAddonFile {
   rideHint?: string;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
-    const id = this.identifier;
     this.#behavior = new EntityBehavior(identifier, dir);
     this.#resource = new EntityResource(identifier, dir);
 
-    this.alias = startCase(id.name);
+    this.alias = startCase(this.identifier.name);
     this.spawnEgg = `Spawn ${this.alias}`;
-    Project.onSave(() => {
+  }
+
+  saveTo(project: Project) {
+    project.onSave(({ itemTextures, lang }) => {
+      const id = this.identifier;
       if (id.namespace !== "minecraft") {
         const { alias, spawnEgg, rideHint } = this;
-        Project.lang.setEntity(id, alias);
-
+        lang.setEntity(id, alias);
         if (this.behavior.isSpawnable) {
-          Project.lang.setSpawnEgg(id, spawnEgg);
+          lang.setSpawnEgg(id, spawnEgg);
         }
-        if (this.resource.getSpawnEgg()?.texture === id.name) {
-          Project.setItemTexture(id.name, `spawn_egg/${this.fileName}`);
+        if (this.resource.getSpawnEgg()?.texture === id.name && !itemTextures.has(id.name)) {
+          itemTextures.set(id.name, `textures/items/spawn_egg/${this.fileName}`);
         }
         if (rideHint) {
-          Project.lang.setRideHint(id, rideHint);
+          lang.setRideHint(id, rideHint);
         }
       }
     });

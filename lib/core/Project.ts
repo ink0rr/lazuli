@@ -1,123 +1,120 @@
 import { join } from "../../deps.ts";
-import { Blocks } from "../core/Blocks.ts";
 import { Language } from "../core/Language.ts";
-import { Textures } from "../core/Textures.ts";
+import { ItemTextures, Textures } from "../core/Textures.ts";
 import { outputFile } from "../fs/file.ts";
 import { readJson, writeJson } from "../fs/json.ts";
 
+type Actions = {
+  itemTextures: ItemTextures;
+  lang: Language;
+  writeBP(path: string, data: unknown): void;
+  writeRP(path: string, data: unknown): void;
+};
+
 const paths = {
-  BP: "BP",
-  RP: "RP",
-  get blocks() {
-    return join(this.RP, "blocks.json");
-  },
-  get item_texture() {
-    return join(this.RP, "textures/item_texture.json");
-  },
-  get terrain_texture() {
-    return join(this.RP, "textures/terrain_texture.json");
-  },
-  get lang() {
-    return join(this.RP, "texts/en_US.lang");
-  },
+  item_texture: "textures/item_texture.json",
+  lang: "texts/en_US.lang",
 };
 
-const queue = new Map<string, unknown>();
-
-const actions = {
-  writeBP(path: string, data: unknown) {
-    queue.set(join(paths.BP, path), data);
-  },
-  writeRP(path: string, data: unknown) {
-    queue.set(join(paths.RP, path), data);
-  },
+type Packs = {
+  BP: string;
+  RP: string;
 };
-type Actions = typeof actions;
-const onSaves: ((actions: Actions) => void)[] = [];
 
-let blocks: Blocks | undefined;
-let item_texture: Textures | undefined;
-let terrain_texture: Textures | undefined;
-let lang: Language | undefined;
+export class Project {
+  #packs: Packs = {
+    BP: "BP",
+    RP: "RP",
+  };
+  #callbacks: ((actions: Actions) => void)[] = [];
 
-export const Project = Object.freeze({
-  async load(packs?: { BP: string; RP: string }) {
+  constructor(packs?: Packs) {
     if (packs) {
-      paths.BP = packs.BP;
-      paths.RP = packs.RP;
+      this.#packs = packs;
     }
+  }
 
+  /**
+   * Add a callback to be called when the project is saved
+   */
+  onSave(callback: (actions: Actions) => void) {
+    this.#callbacks.push(callback);
+  }
+
+  /**
+   * Save the project
+   */
+  async save() {
+    const { BP, RP } = this.#packs;
+    let itemTextures: ItemTextures | undefined;
+    let lang: Language | undefined;
     await Promise.allSettled([
-      readJson<Blocks>(paths.blocks).then((data) => {
-        blocks = data;
+      readJson<Textures>(join(RP, paths.item_texture)).then((data) => {
+        itemTextures = new ItemTextures(data);
       }),
-      readJson<Textures>(paths.item_texture).then((data) => {
-        item_texture = data;
-      }),
-      readJson<Textures>(paths.terrain_texture).then((data) => {
-        terrain_texture = data;
-      }),
-      Deno.readTextFile(paths.lang).then((text) => {
+      Deno.readTextFile(join(RP, paths.lang)).then((text) => {
         lang = new Language(text);
       }),
     ]);
-  },
 
-  get blocks() {
-    blocks ??= {};
-    // @ts-expect-error: Can't define format_version on the type
-    blocks.format_version = "1.19.30";
-    return blocks;
-  },
-
-  setItemTexture(name: string, texture: string) {
-    item_texture ??= {
-      resource_pack_name: "pack.name",
-      texture_name: "atlas.items",
-      texture_data: {},
-    };
-    item_texture.texture_data[name] ??= {
-      textures: `textures/items/${texture}`,
-    };
-  },
-
-  setTerrainTexture(name: string, texture: string) {
-    terrain_texture ??= {
-      resource_pack_name: "pack.name",
-      texture_name: "atlas.terrain",
-      texture_data: {},
-    };
-    terrain_texture.texture_data[name] ??= {
-      textures: `textures/blocks/${texture}`,
-    };
-  },
-
-  get lang() {
-    lang ??= new Language("");
-    return lang;
-  },
-
-  onSave(callback: (actions: Actions) => void) {
-    onSaves.push(callback);
-  },
-
-  async save() {
-    for (const f of onSaves) {
-      f(actions);
-    }
-    if (blocks) queue.set(paths.blocks, blocks);
-    if (item_texture) queue.set(paths.item_texture, item_texture);
-    if (terrain_texture) queue.set(paths.terrain_texture, terrain_texture);
-    if (lang) queue.set(paths.lang, lang.toString());
-
-    const promises = [];
-    for (const [path, data] of queue) {
+    const promises: Promise<void>[] = [];
+    const write = (path: string, data: unknown) => {
+      let promise;
       if (typeof data === "string") {
-        promises.push(outputFile(path, data));
+        promise = outputFile(path, data);
       } else {
-        promises.push(writeJson(path, data));
+        promise = writeJson(path, data);
       }
+      promises.push(promise);
+    };
+    const actions: Actions = {
+      get itemTextures() {
+        itemTextures ??= new ItemTextures({
+          resource_pack_name: "pack.name",
+          texture_name: "atlas.items",
+          texture_data: {},
+        });
+        return itemTextures;
+      },
+      get lang() {
+        lang ??= new Language();
+        return lang;
+      },
+      writeBP(path, data) {
+        write(join(BP, path), data);
+      },
+      writeRP(path, data) {
+        write(join(RP, path), data);
+      },
+    };
+
+    for (const fn of this.#callbacks) {
+      fn(actions);
+    }
+    if (itemTextures) {
+      actions.writeRP(paths.item_texture, actions.itemTextures);
+    }
+    if (lang) {
+      actions.writeRP(paths.lang, actions.lang.toString());
     }
     await Promise.all(promises);
-  },
-});
+    this.#callbacks = [];
+  }
+
+  static #instance: Project | undefined;
+
+  static get instance() {
+    return this.#instance;
+  }
+
+  static async lazuli(callback: CallableFunction) {
+    if (Project.#instance) {
+      throw Error("Cannot call lazuli inside lazuli block");
+    }
+    const project = new Project();
+    Project.#instance = project;
+    await callback();
+    await project.save();
+    Project.#instance = undefined;
+  }
+}

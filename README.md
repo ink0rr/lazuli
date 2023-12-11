@@ -10,11 +10,13 @@ I'm still not sure how things are implemented and named, so a lot of stuff are l
 
 ## Usage
 
+### Example 1
+
 ```ts
 import { Entity, Project } from "https://deno.land/x/lazuli/mod.ts";
 
-// Load the project files such as en_US.lang, item_texture.json, terrain_texture.json, etc.
-await Project.load();
+// Creates a new project instance.
+const project = new Project();
 
 // Creates a new entity, but does not write it to the disk yet.
 const entity = new Entity("lazuli:entity");
@@ -47,13 +49,56 @@ entity.resource.setGeometry({
   default: "geometry.blank",
 });
 
+// Add the entity to project.
+entity.saveTo(project);
+
 // Save changes and write to disk.
-await Project.save();
+await project.save();
+```
+
+### Example 2
+
+```ts
+import { Entity, lazuli } from "https://deno.land/x/lazuli/mod.ts";
+
+// Automatically creates a project and saves it.
+await lazuli(() => {
+  // Creates a new entity, it will be automatically added to the project.
+  const entity = new Entity("lazuli:entity");
+  entity.behavior.setComponents({
+    "minecraft:type_family": {
+      family: ["lazuli"],
+    },
+    "minecraft:health": {
+      value: 20,
+      max: 20,
+    },
+  });
+  entity.behavior.setComponentGroups({
+    "lazuli:despawn": {
+      "minecraft:instant_despawn": {},
+    },
+  });
+  entity.behavior.setEvents({
+    "lazuli:despawn": {
+      add: {
+        component_groups: ["lazuli:despawn"],
+      },
+    },
+  });
+
+  entity.resource.setTextures({
+    default: "textures/blank",
+  });
+  entity.resource.setGeometry({
+    default: "geometry.blank",
+  });
+});
 ```
 
 ## Usage In Regolith
 
-Create a filter definitions in your `config.json`.
+Create a filter definition in your `config.json`.
 
 ```json
 {
@@ -64,16 +109,14 @@ Create a filter definitions in your `config.json`.
 }
 ```
 
-Then create a main file at `./data/lazuli/main.ts`.
+Then create a file at `./data/lazuli/main.ts`.
 
 ```ts
-import { Project } from "https://deno.land/x/lazuli/mod.ts";
+import { Entity, lazuli } from "https://deno.land/x/lazuli/mod.ts";
 
-await Project.load();
-
-// Do stuff here.
-
-await Project.save();
+await lazuli(() => {
+  // Do stuff here.
+});
 ```
 
 ## Credits

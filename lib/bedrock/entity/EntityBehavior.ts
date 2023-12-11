@@ -24,8 +24,10 @@ export class EntityBehavior extends IdentifierAddonFile {
         components: {},
       },
     };
+  }
 
-    Project.onSave(({ writeBP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeBP }) => {
       writeBP(`entities/${this.fileName}.json`, this.#data);
     });
   }

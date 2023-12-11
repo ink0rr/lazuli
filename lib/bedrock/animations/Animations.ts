@@ -12,8 +12,10 @@ export class Animations extends AddonFile {
       format_version: "1.10.0",
       animations: {},
     };
+  }
 
-    Project.onSave(({ writeBP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeBP }) => {
       writeBP(`animations/${this.fileName}.json`, this.#data);
     });
   }

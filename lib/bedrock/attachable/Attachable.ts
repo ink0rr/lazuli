@@ -29,8 +29,10 @@ export class Attachable extends IdentifierAddonFile {
         },
       },
     };
+  }
 
-    Project.onSave(({ writeRP }) => {
+  saveTo(project: Project) {
+    project.onSave(({ writeRP }) => {
       writeRP(`attachables/${this.fileName}.json`, this.#data);
     });
   }
