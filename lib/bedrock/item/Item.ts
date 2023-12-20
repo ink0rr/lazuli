@@ -35,15 +35,16 @@ export class Item extends IdentifierAddonFile {
         return;
       }
 
-      lang.setItem(this.identifier, this.alias);
+      const identifier = this.identifier;
+      lang.setItem(identifier, this.alias);
 
       let icon = this.getComponent("minecraft:icon");
       if (typeof icon === "object") {
         icon = icon.texture;
       }
 
-      if (icon === this.id) {
-        itemTextures.set(this.id, `textures/items/${this.fileName}`);
+      if (icon === identifier) {
+        itemTextures.set(identifier, `textures/items/${this.fileName}`);
       }
     });
   }
