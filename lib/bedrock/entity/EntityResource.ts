@@ -7,7 +7,6 @@ export class EntityResource extends IdentifierAddonFile {
   #data: EntityResourceSchema;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
-    const id = this.identifier;
     this.#data = {
       format_version: "1.10.0",
       "minecraft:client_entity": {
@@ -20,7 +19,7 @@ export class EntityResource extends IdentifierAddonFile {
             default: `textures/entity/${this.fileName}`,
           },
           geometry: {
-            default: `geometry.${id.name}`,
+            default: `geometry.${this.id}`,
           },
           render_controllers: [
             "controller.render.default",

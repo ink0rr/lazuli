@@ -1,4 +1,3 @@
-import { Identifier } from "../../core/Identifier.ts";
 import { ItemIdentifier } from "./ItemIdentifier.ts";
 
 // Will probably remove this in the future
@@ -728,7 +727,7 @@ export const query = Object.freeze({
   /**
    * Takes one or more arguments. Returns whether the root actor identifier is any of the specified strings. A preferred query to query.owner_identifier, as it can be adjusted by Mojang to avoid breaking content if names are changed.
    */
-  is_owner_identifier_any: (...identifiers: Identifier[]) => `query.is_owner_identifier_any(${join(...identifiers)})`,
+  is_owner_identifier_any: (...identifiers: string[]) => `query.is_owner_identifier_any(${join(...identifiers)})`,
 
   /**
    * Returns 1.0 if the player has a persona or premium skin, else it returns 0.0.

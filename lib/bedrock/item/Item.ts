@@ -20,29 +20,30 @@ export class Item extends IdentifierAddonFile {
           },
         },
         components: {
-          "minecraft:icon": this.identifier.name,
+          "minecraft:icon": identifier,
         },
       },
     };
-    this.alias = startCase(this.identifier.name);
+    this.alias = startCase(this.id);
   }
 
   saveTo(project: Project) {
     project.onSave(({ itemTextures, lang, writeBP }) => {
       writeBP(`items/${this.fileName}.json`, this.#data);
 
-      const id = this.identifier;
-      if (id.namespace !== "minecraft") {
-        const { alias } = this;
-        lang.setItem(id, alias);
+      if (this.namespace === "minecraft") {
+        return;
+      }
 
-        let icon = this.getComponent("minecraft:icon");
-        if (typeof icon === "object") {
-          icon = icon.texture;
-        }
-        if (icon === id.name) {
-          itemTextures.set(id.name, `textures/items/${this.fileName}`);
-        }
+      lang.setItem(this.identifier, this.alias);
+
+      let icon = this.getComponent("minecraft:icon");
+      if (typeof icon === "object") {
+        icon = icon.texture;
+      }
+
+      if (icon === this.id) {
+        itemTextures.set(this.id, `textures/items/${this.fileName}`);
       }
     });
   }

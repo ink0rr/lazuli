@@ -1,4 +1,4 @@
-import { Identifier } from "../core/Identifier.ts";
+import { join } from "../../deps.ts";
 import { Project } from "../core/Project.ts";
 
 export abstract class AddonFile {
@@ -15,7 +15,10 @@ export abstract class AddonFile {
 }
 
 export abstract class IdentifierAddonFile {
-  #id: Identifier;
+  #namespace: string;
+  #id: string;
+  #identifier: string;
+
   #dir?: string;
   #fileName?: string;
 
@@ -24,7 +27,12 @@ export abstract class IdentifierAddonFile {
    * @param dir Directory to save the file
    */
   constructor(identifier: string, dir?: string) {
-    this.#id = new Identifier(identifier);
+    const split = identifier.split(":");
+    if (split.length !== 2) {
+      throw new Error("Invalid identifier");
+    }
+    [this.#namespace, this.#id] = split;
+    this.#identifier = identifier;
     this.#dir = dir;
 
     if (Project.instance) {
@@ -35,17 +43,34 @@ export abstract class IdentifierAddonFile {
   abstract saveTo(project: Project): void;
 
   /**
+   * Identifier namespace
+   */
+  get namespace() {
+    return this.#namespace;
+  }
+
+  /**
+   * Identifier without namespace
+   */
+  get id() {
+    return this.#id;
+  }
+
+  /**
+   * Identifier with namespace
+   */
+  get identifier() {
+    return this.#identifier;
+  }
+
+  /**
    * File name without extension
    */
   get fileName() {
-    return this.#fileName ?? this.#id.toFilePath(this.#dir);
+    return this.#fileName ?? join(this.#dir ?? "", this.#id);
   }
 
   set fileName(value) {
     this.#fileName = value;
-  }
-
-  get identifier() {
-    return this.#id;
   }
 }

@@ -16,25 +16,30 @@ export class Entity extends IdentifierAddonFile {
     this.#behavior = new EntityBehavior(identifier, dir);
     this.#resource = new EntityResource(identifier, dir);
 
-    this.alias = startCase(this.identifier.name);
+    this.alias = startCase(this.id);
     this.spawnEgg = `Spawn ${this.alias}`;
   }
 
   saveTo(project: Project) {
     project.onSave(({ itemTextures, lang }) => {
-      const id = this.identifier;
-      if (id.namespace !== "minecraft") {
-        const { alias, spawnEgg, rideHint } = this;
-        lang.setEntity(id, alias);
-        if (this.behavior.isSpawnable) {
-          lang.setSpawnEgg(id, spawnEgg);
-        }
-        if (this.resource.getSpawnEgg()?.texture === id.name && !itemTextures.has(id.name)) {
-          itemTextures.set(id.name, `textures/items/spawn_egg/${this.fileName}`);
-        }
-        if (rideHint) {
-          lang.setRideHint(id, rideHint);
-        }
+      if (this.namespace === "minecraft") {
+        return;
+      }
+
+      const identifier = this.identifier;
+      lang.setEntity(identifier, this.alias);
+
+      if (this.behavior.isSpawnable) {
+        lang.setSpawnEgg(identifier, this.spawnEgg);
+      }
+
+      const spawnEggTexture = this.resource.getSpawnEgg()?.texture;
+      if (spawnEggTexture === this.id && !itemTextures.has(this.id)) {
+        itemTextures.set(this.id, `textures/items/spawn_egg/${this.fileName}`);
+      }
+
+      if (this.rideHint) {
+        lang.setRideHint(identifier, this.rideHint);
       }
     });
   }
