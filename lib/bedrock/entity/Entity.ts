@@ -31,11 +31,11 @@ export class Entity extends IdentifierAddonFile {
 
       if (this.behavior.isSpawnable) {
         lang.setSpawnEgg(identifier, this.spawnEgg);
-      }
 
-      const spawnEggTexture = this.resource.getSpawnEgg()?.texture;
-      if (spawnEggTexture === identifier && !itemTextures.has(identifier)) {
-        itemTextures.set(identifier, `textures/items/spawn_egg/${this.fileName}`);
+        const spawnEggTexture = this.resource.getSpawnEgg()?.texture;
+        if (spawnEggTexture === identifier && !itemTextures.has(identifier)) {
+          itemTextures.set(identifier, `textures/items/spawn_egg/${this.fileName}`);
+        }
       }
 
       if (this.rideHint) {
