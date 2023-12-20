@@ -1,5 +1,5 @@
-import { startCase } from "../../../deps.ts";
 import { Project } from "../../core/Project.ts";
+import { startCase } from "../../utils/startCase.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { ItemComponents } from "./types/ItemComponents.ts";
 import { ItemGroup } from "./types/ItemGroup.ts";
