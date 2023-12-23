@@ -327,7 +327,13 @@ export interface ItemComponents {
   /**
    * Determines which animation plays when using an item.
    */
-  "minecraft:use_animation"?: "bow" | "camera" | "crossbow" | "drink" | "eat" | "none";
+  "minecraft:use_animation"?:
+    | "bow"
+    | "camera"
+    | "crossbow"
+    | "drink"
+    | "eat"
+    | "none";
   /**
    * Modifies use effects, including how long the item takes to use and the player's speed when used in combination with components like Shooter, Throwable, or Food.
    */

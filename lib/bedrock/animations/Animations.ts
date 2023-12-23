@@ -27,7 +27,8 @@ export class Animations extends AddonFile {
     animation ??= {
       timeline: {},
     };
-    return this.#data.animations[`animation.${id}`] = animation;
+    this.#data.animations[`animation.${id}`] = animation;
+    return animation;
   }
 
   /**

@@ -34,7 +34,10 @@ export class Entity extends IdentifierAddonFile {
 
         const spawnEggTexture = this.resource.getSpawnEgg()?.texture;
         if (spawnEggTexture === identifier && !itemTextures.has(identifier)) {
-          itemTextures.set(identifier, `textures/items/spawn_egg/${this.fileName}`);
+          itemTextures.set(
+            identifier,
+            `textures/items/spawn_egg/${this.fileName}`,
+          );
         }
       }
 

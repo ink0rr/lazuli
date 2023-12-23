@@ -543,7 +543,15 @@ export interface EntityComponents {
         /**
          * The target of the event.
          */
-        target?: "baby" | "block" | "damager" | "other" | "parent" | "player" | "self" | "target";
+        target?:
+          | "baby"
+          | "block"
+          | "damager"
+          | "other"
+          | "parent"
+          | "player"
+          | "self"
+          | "target";
         /**
          * UNDOCUMENTED.
          */
@@ -569,7 +577,15 @@ export interface EntityComponents {
         /**
          * The target of the event.
          */
-        target?: "baby" | "block" | "damager" | "other" | "parent" | "player" | "self" | "target";
+        target?:
+          | "baby"
+          | "block"
+          | "damager"
+          | "other"
+          | "parent"
+          | "player"
+          | "self"
+          | "target";
         /**
          * UNDOCUMENTED.
          */

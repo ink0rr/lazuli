@@ -98,7 +98,13 @@ export interface ItemSchema {
     description: {
       identifier: string;
       menu_category?: {
-        category?: "commands" | "construction" | "equipment" | "items" | "nature" | "none";
+        category?:
+          | "commands"
+          | "construction"
+          | "equipment"
+          | "items"
+          | "nature"
+          | "none";
         group?: ItemGroup;
         is_hidden_in_commands?: boolean;
       };

@@ -1,12 +1,14 @@
 # Lazuli
 
-Lazuli is a deno library that helps you write Minecraft Bedrock addon files using TypeScript.
+Lazuli is a deno library that helps you write Minecraft Bedrock addon files
+using TypeScript.
 
 ## Status
 
 **EXPERIMENTAL**
 
-I'm still not sure how things are implemented and named, so a lot of stuff are likely to change.
+I'm still not sure how things are implemented and named, so a lot of stuff are
+likely to change.
 
 ## Usage
 

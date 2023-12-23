@@ -25,4 +25,9 @@ interface SetName {
   name: string;
 }
 
-export type LootTableFunction = SetCount | SetDamage | SetData | SetLore | SetName;
+export type LootTableFunction =
+  | SetCount
+  | SetDamage
+  | SetData
+  | SetLore
+  | SetName;

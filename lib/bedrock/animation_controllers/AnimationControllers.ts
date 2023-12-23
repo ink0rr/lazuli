@@ -25,7 +25,8 @@ export class AnimationControllers extends AddonFile {
     controller ??= {
       states: {},
     };
-    return this.#data.animation_controllers[`controller.animation.${id}`] = controller;
+    this.#data.animation_controllers[`controller.animation.${id}`] = controller;
+    return controller;
   }
 
   /**

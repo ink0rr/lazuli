@@ -176,7 +176,8 @@ export class EntityResource extends IdentifierAddonFile {
    */
   // deno-lint-ignore no-explicit-any
   static from(data: any) {
-    const identifier = data?.["minecraft:client_entity"]?.description?.identifier;
+    const identifier = data
+      ?.["minecraft:client_entity"]?.description?.identifier;
     if (typeof identifier !== "string") {
       throw new Error(`Invalid entity resource data`);
     }
