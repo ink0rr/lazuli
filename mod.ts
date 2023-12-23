@@ -20,3 +20,4 @@ export * from "./lib/bedrock/loot_table/LootTable.ts";
 
 export * from "./lib/fs/file.ts";
 export * from "./lib/fs/json.ts";
+export * from "./lib/utils/startCase.ts";
