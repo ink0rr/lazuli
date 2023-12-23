@@ -8,7 +8,6 @@ export class Attachable extends IdentifierAddonFile {
   #data: AttachableSchema;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
-    const id = this.identifier;
     this.#data = {
       format_version: "1.10.0",
       "minecraft:attachable": {
@@ -21,7 +20,7 @@ export class Attachable extends IdentifierAddonFile {
             default: `textures/items/${this.fileName}`,
           },
           geometry: {
-            default: `geometry.${id.name}`,
+            default: `geometry.${this.id}`,
           },
           render_controllers: [
             "controller.render.default",

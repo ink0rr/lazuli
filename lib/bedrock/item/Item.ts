@@ -1,5 +1,5 @@
-import { startCase } from "../../../deps.ts";
 import { Project } from "../../core/Project.ts";
+import { startCase } from "../../utils/startCase.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { ItemComponents } from "./types/ItemComponents.ts";
 import { ItemGroup } from "./types/ItemGroup.ts";
@@ -20,29 +20,31 @@ export class Item extends IdentifierAddonFile {
           },
         },
         components: {
-          "minecraft:icon": this.identifier.name,
+          "minecraft:icon": identifier,
         },
       },
     };
-    this.alias = startCase(this.identifier.name);
+    this.alias = startCase(this.id);
   }
 
   saveTo(project: Project) {
     project.onSave(({ itemTextures, lang, writeBP }) => {
       writeBP(`items/${this.fileName}.json`, this.#data);
 
-      const id = this.identifier;
-      if (id.namespace !== "minecraft") {
-        const { alias } = this;
-        lang.setItem(id, alias);
+      if (this.namespace === "minecraft") {
+        return;
+      }
 
-        let icon = this.getComponent("minecraft:icon");
-        if (typeof icon === "object") {
-          icon = icon.texture;
-        }
-        if (icon === id.name) {
-          itemTextures.set(id.name, `textures/items/${this.fileName}`);
-        }
+      const identifier = this.identifier;
+      lang.setItem(identifier, this.alias);
+
+      let icon = this.getComponent("minecraft:icon");
+      if (typeof icon === "object") {
+        icon = icon.texture;
+      }
+
+      if (icon === identifier) {
+        itemTextures.set(identifier, `textures/items/${this.fileName}`);
       }
     });
   }
@@ -96,7 +98,13 @@ export interface ItemSchema {
     description: {
       identifier: string;
       menu_category?: {
-        category?: "commands" | "construction" | "equipment" | "items" | "nature" | "none";
+        category?:
+          | "commands"
+          | "construction"
+          | "equipment"
+          | "items"
+          | "nature"
+          | "none";
         group?: ItemGroup;
         is_hidden_in_commands?: boolean;
       };

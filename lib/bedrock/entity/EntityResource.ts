@@ -7,7 +7,6 @@ export class EntityResource extends IdentifierAddonFile {
   #data: EntityResourceSchema;
   constructor(identifier: string, dir?: string) {
     super(identifier, dir);
-    const id = this.identifier;
     this.#data = {
       format_version: "1.10.0",
       "minecraft:client_entity": {
@@ -20,7 +19,7 @@ export class EntityResource extends IdentifierAddonFile {
             default: `textures/entity/${this.fileName}`,
           },
           geometry: {
-            default: `geometry.${id.name}`,
+            default: `geometry.${this.id}`,
           },
           render_controllers: [
             "controller.render.default",
@@ -177,7 +176,8 @@ export class EntityResource extends IdentifierAddonFile {
    */
   // deno-lint-ignore no-explicit-any
   static from(data: any) {
-    const identifier = data?.["minecraft:client_entity"]?.description?.identifier;
+    const identifier = data
+      ?.["minecraft:client_entity"]?.description?.identifier;
     if (typeof identifier !== "string") {
       throw new Error(`Invalid entity resource data`);
     }

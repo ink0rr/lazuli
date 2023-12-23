@@ -1,5 +1,5 @@
-import { startCase } from "../../../deps.ts";
 import { Project } from "../../core/Project.ts";
+import { startCase } from "../../utils/startCase.ts";
 import { IdentifierAddonFile } from "../AddonFile.ts";
 import { EntityBehavior } from "./EntityBehavior.ts";
 import { EntityResource } from "./EntityResource.ts";
@@ -16,25 +16,33 @@ export class Entity extends IdentifierAddonFile {
     this.#behavior = new EntityBehavior(identifier, dir);
     this.#resource = new EntityResource(identifier, dir);
 
-    this.alias = startCase(this.identifier.name);
+    this.alias = startCase(this.id);
     this.spawnEgg = `Spawn ${this.alias}`;
   }
 
   saveTo(project: Project) {
     project.onSave(({ itemTextures, lang }) => {
-      const id = this.identifier;
-      if (id.namespace !== "minecraft") {
-        const { alias, spawnEgg, rideHint } = this;
-        lang.setEntity(id, alias);
-        if (this.behavior.isSpawnable) {
-          lang.setSpawnEgg(id, spawnEgg);
+      if (this.namespace === "minecraft") {
+        return;
+      }
+
+      const identifier = this.identifier;
+      lang.setEntity(identifier, this.alias);
+
+      if (this.behavior.isSpawnable) {
+        lang.setSpawnEgg(identifier, this.spawnEgg);
+
+        const spawnEggTexture = this.resource.getSpawnEgg()?.texture;
+        if (spawnEggTexture === identifier && !itemTextures.has(identifier)) {
+          itemTextures.set(
+            identifier,
+            `textures/items/spawn_egg/${this.fileName}`,
+          );
         }
-        if (this.resource.getSpawnEgg()?.texture === id.name && !itemTextures.has(id.name)) {
-          itemTextures.set(id.name, `textures/items/spawn_egg/${this.fileName}`);
-        }
-        if (rideHint) {
-          lang.setRideHint(id, rideHint);
-        }
+      }
+
+      if (this.rideHint) {
+        lang.setRideHint(identifier, this.rideHint);
       }
     });
   }

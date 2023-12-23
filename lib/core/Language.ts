@@ -1,5 +1,3 @@
-import { Identifier } from "./Identifier.ts";
-
 export class Language extends Map<string, string> {
   constructor(text = "") {
     super(
@@ -18,27 +16,27 @@ export class Language extends Map<string, string> {
     return super.set(key, value);
   }
 
-  setBlock(identifier: Identifier, value: string) {
+  setBlock(identifier: string, value: string) {
     const key = `tile.${identifier}.name`;
     this.set(key, value);
   }
 
-  setEntity(identifier: Identifier, value: string) {
+  setEntity(identifier: string, value: string) {
     const key = `entity.${identifier}.name`;
     this.set(key, value);
   }
 
-  setSpawnEgg(identifier: Identifier, value: string) {
+  setSpawnEgg(identifier: string, value: string) {
     const key = `item.spawn_egg.entity.${identifier}.name`;
     this.set(key, value);
   }
 
-  setRideHint(identifier: Identifier, value: string) {
+  setRideHint(identifier: string, value: string) {
     const key = `action.hint.exit.${identifier}`;
     this.set(key, value);
   }
 
-  setItem(identifier: Identifier, value: string) {
+  setItem(identifier: string, value: string) {
     const key = `item.${identifier}`;
     this.set(key, value);
   }

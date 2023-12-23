@@ -141,7 +141,10 @@ export class EntityBehavior extends IdentifierAddonFile {
     Object.assign(this.#entity.component_groups ??= {}, componentGroups);
   }
 
-  editComponentGroup(key: string, callback: (data?: Accessor<EntityComponents>) => void) {
+  editComponentGroup(
+    key: string,
+    callback: (data?: Accessor<EntityComponents>) => void,
+  ) {
     const componentGroup = this.getComponentGroup(key);
     callback(componentGroup);
   }
@@ -154,9 +157,8 @@ export class EntityBehavior extends IdentifierAddonFile {
   }
 
   getComponentGroups() {
-    return Object.entries(this.#entity.component_groups ?? {}).map(([key, value]) =>
-      [key, new Accessor(value)] as const
-    );
+    return Object.entries(this.#entity.component_groups ?? {})
+      .map(([key, value]) => [key, new Accessor(value)] as const);
   }
 
   setComponentGroups(componentGroups: Record<string, EntityComponents>) {

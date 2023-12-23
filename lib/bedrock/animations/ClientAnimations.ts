@@ -25,7 +25,8 @@ export class ClientAnimations extends AddonFile {
    */
   add(id: string, animation?: ClientAnimation) {
     animation ??= {};
-    return this.#data.animations[`animation.${id}`] = animation;
+    this.#data.animations[`animation.${id}`] = animation;
+    return animation;
   }
 
   /**
