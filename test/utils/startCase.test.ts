@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.204.0/assert/mod.ts";
+import { assertEquals } from "../../dev_deps.ts";
 import { startCase } from "../../lib/utils/startCase.ts";
 
 Deno.test("startCase", () => {
